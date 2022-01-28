@@ -1,0 +1,94 @@
+{
+    "env" : [
+        {"logging_level" : "WARNING"}
+    ],
+    "info" : [
+        { "name" : "Mike's Shop" }
+    ],
+    "devices" : [
+        {
+            "label" : "Main Dust Collector",
+            "id" : "dustcollector-1",
+            "type" : "DustCollector",
+            "prefs" : {
+                "min_run_time" : 60
+            }
+        },
+        {
+            "label" : "Overhead LED",
+            "id" : "led-light-9",
+            "type" : "LEDLight",
+            "prefs" : {
+                "default_brightness" : 75
+            }
+        },
+        {
+            "label" : "Side table LED",
+            "id" : "led-light-12",
+            "type" : "LEDLight",
+            "prefs" : {
+                "default_brightness" : 125
+            }
+        },
+        {
+            "label" : "Saw Button LED",
+            "id" : "rgb-light-7",
+            "type" : "RGBLight",
+            "prefs" : {
+                "default_on_color" : "25,15,2",
+                "default_off_color" : "35,12,9",
+                "default_spin_down_color" : "42,63,77"
+            }
+        },
+        {
+            "label" : "Table Saw Toggle Button",
+            "id" : "toggle-button-3",
+            "type" : "ToggleButton",
+            "prefs" : {}
+        }
+    ],
+    "tools": [
+        {
+            "name" : "Table Saw",
+            "id" : "table-saw",
+            "controllers" : [
+                {
+                    "id" : "toggle-button-3",
+                    "prefs" : {}
+                }
+            ],
+            "listeners" : [
+                {
+                    "id" : "dust-colector-1",
+                    "prefs" : 
+                    {
+                        "spin_down_time" : 30
+                    }
+                },
+                {
+                    "id" : "led-light-9",
+                    "prefs" : 
+                    {
+                        "brightness" : 100
+                    }
+                },
+                {
+                    "id" : "led-light-12",
+                    "prefs" : 
+                    {
+                        "brightness" : 150
+                    }
+                },
+                {
+                    "id" : "rgb-light-7",
+                    "prefs" : 
+                    {
+                        "on_color" : "25,15,2",
+                        "off_color" : "35,12,9",
+                        "spin_down_color" : "42,63,77"
+                    }
+                }
+            ]
+        }
+    ]
+}
