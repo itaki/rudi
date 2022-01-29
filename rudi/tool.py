@@ -21,18 +21,18 @@ class ToolManager():
         logging.debug("All tools removed!")
 
     def printToolList(self):
-        print("\n" + "LOADED TOOLS:" + "\n" + "===================================")
+        print("\n" + "TOOLS:" + "\n" + "===================================")
         for tool in self.tools:
-            print(tool.id)
+            print("\"" + tool.id + "\"")
 
             output = "    Triggers: "
             for trigger in tool.triggers:
-                output = output + trigger['id'] + ", "
+                output = output + "\n        \"" + trigger['id'] + "\""
             print(output)
 
             output = "    Listeners: "
             for listener in tool.listeners:
-                output = output + listener['id'] + ", "
+                output = output + "\n        \"" + listener['id'] + "\""
             print(output)
 
 

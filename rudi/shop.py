@@ -23,7 +23,7 @@ class Shop():
         self.toolManager.addTools(self.config['tools'])
         
         logging.debug("Config loaded!")
-        self.deviceManager.listAllDevices()
+        self.deviceManager.printDeviceList()
         self.toolManager.printToolList()
 
 

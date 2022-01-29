@@ -28,13 +28,14 @@ class DeviceManager():
         self.listener_devices = []
         logging.debug("All devices removed!")
 
-    def listAllDevices(self):
-        print("\n" + "Trigger devices:")
+    def printDeviceList(self):
+        print("\n" + "DEVICES:" + "\n" + "===================================")
+        print("Triggers:")
         for device in self.trigger_devices:
-            print("- " + device.id)
-        print("\n" + "Listener devices:")
+            print("    \"" + device.id + "\"")
+        print("\n" + "Listeners:")
         for device in self.listener_devices:
-            print("- " + device.id)
+            print("    \"" + device.id + "\"")
 
 
 class TriggerDevice():
