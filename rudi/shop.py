@@ -7,7 +7,7 @@ class Shop():
     devices = []
 
     def __init__(self):
-        #self.deviceManager = device.DeviceManager()
+        self.deviceManager = device.DeviceManager()
         logging.debug("Shop started!")
 
 
@@ -17,17 +17,10 @@ class Shop():
         print("\n" + "Welcome to " + self.getShopName())
         print("===================================" + "\n")
 
-        for item in self.config['devices']:
-            self.devices.append(device.Device(item['id']))
+        self.deviceManager.addDevices(self.config['devices'])
         
         logging.debug("Config loaded!")
-        self.listDevices()
-
-
-    def listDevices(self):
-        print("\n" + "Registered devices:")
-        for device in self.devices:
-            print("- " + device.id)
+        self.deviceManager.listAllDevices()
 
 
     def getShopName(self):
