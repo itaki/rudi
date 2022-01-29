@@ -1,5 +1,6 @@
 import logging
 from . import device
+from . import tool
 
 class Shop():
     
@@ -8,6 +9,7 @@ class Shop():
 
     def __init__(self):
         self.deviceManager = device.DeviceManager()
+        self.toolManager = tool.ToolManager()
         logging.debug("Shop started!")
 
 
@@ -18,9 +20,11 @@ class Shop():
         print("===================================" + "\n")
 
         self.deviceManager.addDevices(self.config['devices'])
+        self.toolManager.addTools(self.config['tools'])
         
         logging.debug("Config loaded!")
         self.deviceManager.listAllDevices()
+        self.toolManager.printToolList()
 
 
     def getShopName(self):
