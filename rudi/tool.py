@@ -33,7 +33,7 @@ class ToolManager():
             output = "    Listeners: "
             for listener in tool.listeners:
                 output = output + "\n        \"" + listener['id'] + "\""
-            print(output)
+            print(output + "\n")
 
 
 
