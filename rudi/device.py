@@ -1,3 +1,4 @@
+import sys
 import logging
 
 class DeviceManager():
@@ -6,12 +7,12 @@ class DeviceManager():
     listener_devices = {}
 
     def add_trigger_device(self, device):
+        logging.debug("Adding trigger device: " + device['id'])
         self.trigger_devices[device["id"]] = DeviceFactory(device)
-        logging.debug("Trigger device added: " + device['id'])
 
     def add_listener_device(self, device):
+        logging.debug("Adding listener device: " + device['id'])
         self.listener_devices[device["id"]] = DeviceFactory(device)
-        logging.debug("Listener device added: " + device['id'])
 
     def add_devices_from_config(self, devices):
         for device in devices['triggers']:
@@ -38,29 +39,34 @@ class DeviceManager():
             print("    \"" + device_id + "\"")
 
 def DeviceFactory(device):
-    return TriggerDevice(device)
 
+    # would love to make this fully dynamic to not need the classmap
+    # inspiration: https://python-course.eu/oop/dynamically-creating-classes-with-type.php
+
+    classmap = {
+        'TriggerDevice': TriggerDevice,
+        'ListenerDevice': ListenerDevice,
+        'VoltageDetector': VoltageDetector,
+        'DustCollector': DustCollector,
+        'Gate': Gate
+    }
+    return classmap[device["type"]](device)
 
 
 class Device():
     
-    id = ""
-    label = ""
-    type = ""
-    connection = ""
+    initial_config = {}
 
     def __init__(self, device):
-        self.id = device["id"]
-        self.label = device["label"]
-        self.type = device["type"]
-        self.connection = device["connection"]
-        logging.debug("Device created: " + self.label)
+        self.initial_config = device
+        logging.debug("Device added: " + self.initial_config["label"])
 
 
 class TriggerDevice(Device):
     
-    def on_trigger(self):
-        logging.debug("Trigger device detected: " + self.label)
+    def on_trigger(self, source):
+        logging.debug(self.initial_config["label"] + " detected a trigger event from device: " + source)
+
 
 class ListenerDevice(Device):
 
@@ -68,12 +74,10 @@ class ListenerDevice(Device):
     
     def on_tool_start(self, tool):
         self.current_tool = tool
-        logging.debug(self.label + " responding to start of " + self.current_tool + " tool.")
+        logging.debug(self.initial_config["label"] + " responding to start of " + self.current_tool + " tool.")
 
-class VoltageDetector(TriggerDevice):
 
-    base_voltage = 10
-
-class DustCollector(ListenerDevice):
-
-    min_runtime_sec= 180
+# import of specific device classes must happen after parent classes are defined above
+sys.path.append('../rudi')
+from rudi.listeners import *
+from rudi.triggers import *

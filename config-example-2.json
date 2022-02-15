@@ -11,26 +11,26 @@
                 "label" : "Table Saw Voltage Detector",
                 "id" : "table-saw-voltage-detector",
                 "type" : "VoltageDetector",
-                "config" : {
-                    "connection_type" : "GPIO_PINS",
+                "connection" : {
+                    "type" : "GPIO_PINS",
                     "pins" : [ "GPIO4", "GPIO5" ]
                 }
             },
             {
                 "label" : "Table Saw Left Button",
                 "id" : "table-saw-left-button",
-                "type" : "SimpleButton",
-                "config" : {
-                    "connection_type" : "GPIO_PINS",
+                "type" : "TriggerDevice",
+                "connection" : {
+                    "type" : "GPIO_PINS",
                     "pins" : [ "GPIO7", "GPIO8" ]
                 }
             },
             {
                 "label" : "Table Saw Foot Sweep Button",
                 "id" : "table-saw-foot-sweep-button",
-                "type" : "SimpleButton",
-                "config" : {
-                    "connection_type" : "GPIO_PINS",
+                "type" : "TriggerDevice",
+                "connection" : {
+                    "type" : "GPIO_PINS",
                     "pins" : [ "GPIO9", "GPI10" ]
                 }
             }
@@ -44,7 +44,7 @@
                     "type" : "GPIO_PINS",
                     "pins" : [ "GPI11", "GPI12" ]
                 },
-                "config" : {
+                "defaults" : {
                     "min_runtime" : "10"
                 }
             },
@@ -56,7 +56,7 @@
                     "type" : "GPIO_PINS",
                     "pins" : [ "GPI13", "GPI14" ]
                 },
-                "config" : {
+                "defaults" : {
                     "open_pwm" : "90",
                     "closed_pwm" : "180"
                 }
@@ -69,7 +69,7 @@
                     "type" : "GPIO_PINS",
                     "pins" : [ "GPI15", "GPI16" ]
                 },
-                "config" : {
+                "defaults" : {
                     "open_pwm" : "95",
                     "closed_pwm" : "160"
                 }
@@ -82,7 +82,7 @@
                     "type" : "GPIO_PINS",
                     "pins" : [ "GPI17", "GPI18" ]
                 },
-                "config" : {
+                "defaults" : {
                     "open_pwm" : "88",
                     "closed_pwm" : "155"
                 }
