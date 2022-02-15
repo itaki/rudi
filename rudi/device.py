@@ -2,22 +2,22 @@ import logging
 
 class DeviceManager():
 
-    trigger_devices = []
-    listener_devices = []
+    trigger_devices = {}
+    listener_devices = {}
 
-    def addTriggerDevice(self, item):
-        self.trigger_devices.append(TriggerDevice(item['id']))
-        logging.debug("Trigger device added: " + item['id'])
+    def add_trigger_device(self, device):
+        self.trigger_devices[device["id"]] = DeviceFactory(device)
+        logging.debug("Trigger device added: " + device['id'])
 
-    def addListenerDevice(self, item):
-        self.listener_devices.append(ListenerDevice(item['id']))
-        logging.debug("Listener device added: " + item['id'])
+    def add_listener_device(self, device):
+        self.listener_devices[device["id"]] = DeviceFactory(device)
+        logging.debug("Listener device added: " + device['id'])
 
-    def addDevices(self, items):
-        for item in items['triggers']:
-            self.addTriggerDevice(item)
-        for item in items['listeners']:
-            self.addListenerDevice(item)
+    def add_devices_from_config(self, devices):
+        for device in devices['triggers']:
+            self.add_trigger_device(device)
+        for device in devices['listeners']:
+            self.add_listener_device(device)
 
     def removeDeviceById(self, id):
         # will look through both trigger_devices and trigger_devices collections
@@ -31,26 +31,49 @@ class DeviceManager():
     def printDeviceList(self):
         print("\n" + "DEVICES:" + "\n" + "===================================")
         print("Triggers:")
-        for device in self.trigger_devices:
-            print("    \"" + device.id + "\"")
+        for device_id in self.trigger_devices:
+            print("    \"" + device_id + "\"")
         print("\n" + "Listeners:")
-        for device in self.listener_devices:
-            print("    \"" + device.id + "\"")
+        for device_id in self.listener_devices:
+            print("    \"" + device_id + "\"")
+
+def DeviceFactory(device):
+    return TriggerDevice(device)
 
 
-class TriggerDevice():
+
+class Device():
     
     id = ""
+    label = ""
+    type = ""
+    connection = ""
 
-    def __init__(self, id):
-        self.id = id
-        logging.debug("Trigger device created: " + self.id)
+    def __init__(self, device):
+        self.id = device["id"]
+        self.label = device["label"]
+        self.type = device["type"]
+        self.connection = device["connection"]
+        logging.debug("Device created: " + self.label)
 
-class ListenerDevice():
+
+class TriggerDevice(Device):
     
-    id = ""
+    def on_trigger(self):
+        logging.debug("Trigger device detected: " + self.label)
 
-    def __init__(self, id):
-        self.id = id
-        logging.debug("Listener device created: " + self.id)
-        
+class ListenerDevice(Device):
+
+    current_tool = "" # the most recent tool to be responded to by this device
+    
+    def on_tool_start(self, tool):
+        self.current_tool = tool
+        logging.debug(self.label + " responding to start of " + self.current_tool + " tool.")
+
+class VoltageDetector(TriggerDevice):
+
+    base_voltage = 10
+
+class DustCollector(ListenerDevice):
+
+    min_runtime_sec= 180

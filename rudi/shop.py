@@ -19,7 +19,7 @@ class Shop():
         print("\n" + "Welcome to " + self.getShopName())
         print("===================================" + "\n")
 
-        self.deviceManager.addDevices(self.config['devices'])
+        self.deviceManager.add_devices_from_config(self.config['devices'])
         self.toolManager.addTools(self.config['tools'])
         
         logging.debug("Config loaded!")
