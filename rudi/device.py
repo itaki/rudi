@@ -1,23 +1,27 @@
+import sys
 import logging
+import pickle
+from . import shop as shop
+
 
 class DeviceManager():
 
-    trigger_devices = []
-    listener_devices = []
+    trigger_devices = {}
+    listener_devices = {}
 
-    def addTriggerDevice(self, item):
-        self.trigger_devices.append(TriggerDevice(item['id']))
-        logging.debug("Trigger device added: " + item['id'])
+    def add_trigger_device(self, device):
+        logging.debug("Adding trigger device: " + device['id'])
+        self.trigger_devices[device["id"]] = DeviceFactory(device)
 
-    def addListenerDevice(self, item):
-        self.listener_devices.append(ListenerDevice(item['id']))
-        logging.debug("Listener device added: " + item['id'])
+    def add_listener_device(self, device):
+        logging.debug("Adding listener device: " + device['id'])
+        self.listener_devices[device["id"]] = DeviceFactory(device)
 
-    def addDevices(self, items):
-        for item in items['triggers']:
-            self.addTriggerDevice(item)
-        for item in items['listeners']:
-            self.addListenerDevice(item)
+    def add_devices_from_config(self, devices):
+        for device in devices['triggers']:
+            self.add_trigger_device(device)
+        for device in devices['listeners']:
+            self.add_listener_device(device)
 
     def removeDeviceById(self, id):
         # will look through both trigger_devices and trigger_devices collections
@@ -31,26 +35,112 @@ class DeviceManager():
     def printDeviceList(self):
         print("\n" + "DEVICES:" + "\n" + "===================================")
         print("Triggers:")
-        for device in self.trigger_devices:
-            print("    \"" + device.id + "\"")
+        for device_id in self.trigger_devices:
+            print("    \"" + device_id + "\"")
         print("\n" + "Listeners:")
-        for device in self.listener_devices:
-            print("    \"" + device.id + "\"")
+        for device_id in self.listener_devices:
+            print("    \"" + device_id + "\"")
+
+def DeviceFactory(device):
+
+    # would love to make this fully dynamic to not need the classmap
+    # inspiration: https://python-course.eu/oop/dynamically-creating-classes-with-type.php
+
+    classmap = {
+        'TriggerDevice': TriggerDevice,
+        'ListenerDevice': ListenerDevice,
+        'VoltageDetector': VoltageDetector,
+        'DustCollector': DustCollector,
+        'Gate': Gate
+    }
+    return classmap[device["type"]](device)
 
 
-class TriggerDevice():
+class Device():
     
-    id = ""
+    config = {}
 
-    def __init__(self, id):
-        self.id = id
-        logging.debug("Trigger device created: " + self.id)
+    def __init__(self):
+        raise Exception("The Device base class cannot be directly used")
 
-class ListenerDevice():
+
+class TriggerDevice(Device):
+
+    def __init__(self, device_config):
+        self.config = device_config
+        logging.debug("Trigger device added: " + self.config["label"])
+        shop.ee.on(shop.ShopEvents.TRIGGER_DEVICE_START_REQUEST, self.request_listener)
+        self.on_init()
     
-    id = ""
+    def on_init(self):
+        # a safe place for subclasses to add init code without needed to override init
+        return True
 
-    def __init__(self, id):
-        self.id = id
-        logging.debug("Listener device created: " + self.id)
+    def request_listener(self, device_id):
+        # listens for trigger requests that did not come from GPIO
+        if (self.config["id"] == device_id):
+            logging.debug(self.config["id"] + " heard trigger request")
+            self.on_trigger()
+    
+    def hardware_listener(self):
+        # TODO: place gpio listener stuff here
+        self.on_trigger()
+    
+    def on_trigger(self):
+        logging.debug(self.config["id"] + " was triggered")
+        shop.ee.emit(shop.ShopEvents.TRIGGER_DEVICE_STARTED, self.config["id"])
+
+
+class ListenerDevice(Device):
+
+    orig_settings = {} # used to restore device settings before a started tool's settings are applied 
+    # current_tool = "" # the current tool being responded to by this listener device
+
+    def __init__(self, device_config):
+        self.config = device_config
+        self.orig_settings = device_config["settings"]
+        logging.debug("Listener device added: " + self.config["label"])
+        shop.ee.on(shop.ShopEvents.TOOL_STARTED, self.tool_start_listener)
+        self.on_init()
+
+    def on_init(self):
+        # a safe place for subclasses to add init code without needed to override init
+        return True
+    
+    def tool_start_listener(self, serialized_tool_config):
+
+        # get incoming tool config
+        incoming_tool_config = pickle.loads(serialized_tool_config)
+
+        # load any config specific to this listener device
+        for listener in incoming_tool_config["device_links"]["listeners"]:
+            if listener["id"] == self.config["id"]:
+                # configure tool-specific settings using device originals as starting point
+                self.config["settings"] = merge_dicts(listener["settings"], self.orig_settings)
+        logging.debug(self.config["label"] + " heard start of " + incoming_tool_config["id"] + " tool.")
+        shop.ee.emit(shop.ShopEvents.LISTENER_DEVICE_STARTED, self.config["id"])
+        self.on_start()
+    
+    def on_start(self):
+        # a safe place for subclasses to add start code without needed to override init
+        return True
         
+
+# https://stackoverflow.com/questions/20656135/python-deep-merge-dictionary-data
+def merge_dicts(source, destination):
+
+    for key, value in source.items():
+        if isinstance(value, dict):
+            # get node or create one
+            node = destination.setdefault(key, {})
+            merge_dicts(value, node)
+        else:
+            destination[key] = value
+
+    return destination
+
+
+# import of specific device classes must happen after parent classes are defined above
+sys.path.append('../rudi')
+from rudi.listeners import *
+from rudi.triggers import *

@@ -1,12 +1,14 @@
 import logging
+import pickle
+from . import shop as shop
 
 class ToolManager():
 
     tools = []
 
-    def addTool(self, tool):
-        self.tools.append(Tool(tool['id'], tool['device_links']['triggers'], tool['device_links']['listeners']))
-        logging.debug("Tool added: " + tool['id'])
+    def addTool(self, tool_config):
+        #self.tools.append(Tool(tool['id'], tool['device_links']['triggers'], tool['device_links']['listeners']))
+        self.tools.append(Tool(tool_config))
 
     def addTools(self, tools):
         for tool in tools:
@@ -39,11 +41,22 @@ class ToolManager():
 
 class Tool():
     
-    id = ""
-    triggers = []
-    listeners = []
+    config = {}
 
-    def __init__(self, id, triggers, listeners):
-        self.id = id
-        self.triggers = triggers
-        self.listeners = listeners
+    def __init__(self, tool_config):
+        self.config = tool_config
+        shop.ee.on(shop.ShopEvents.TOOL_START_REQUEST, self.request_listener)
+        shop.ee.on(shop.ShopEvents.TRIGGER_DEVICE_STARTED, self.trigger_start_listener)
+        logging.debug("Tool Added: " + self.config["id"])
+    
+    def request_listener(self, tool_id):
+        # handles direct tool start request events
+        if tool_id == self.config["id"]:
+            logging.debug(self.config["id"] + " heard tool start request")
+            shop.ee.emit(shop.ShopEvents.TOOL_STARTED, pickle.dumps(self.config))
+    
+    def trigger_start_listener(self, trigger_id):
+        # handles trigger device start events
+        if trigger_id in self.config["device_links"]["triggers"]:
+            logging.debug(self.config["id"] + " heard trigger start of: " + trigger_id)
+            shop.ee.emit(shop.ShopEvents.TOOL_STARTED, pickle.dumps(self.config))
