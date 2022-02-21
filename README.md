@@ -3,7 +3,7 @@ A Raspberry Pi / Python based shop manager that mostly manages how tools and gat
 
 ---
 
-## Running Rudi
+## Running Rudi Locally
 
 This project was built and tested using Anaconda on a Mac. The instructions below assume you are using the same!
 
@@ -14,6 +14,12 @@ This project was built and tested using Anaconda on a Mac. The instructions belo
 2. Create a config.json file (see example) and save in the project root
 
 3. Run `python main.py`
+
+---
+
+## Running Rudi on a Pi
+
+Same basic steps as running locally, more coming here soon!
 
 ---
 
@@ -60,6 +66,6 @@ If you get a permission error you may need to run:
 
 The logging level is set using the LOG_LEVEL environment variable.
 
-The easiest way set this quickly is to padd to the command line:
+The easiest way set this quickly is to add to the command line:
 
     `LOG_LEVEL=DEBUG ./dev.sh `
