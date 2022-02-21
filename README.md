@@ -54,8 +54,12 @@ If you get a permission error you may need to run:
 
     - DEBUG
     - INFO
-    - WARNING
+    - WARNING (this is the default)
     - ERROR
     - CRITICAL
 
-To change the logging level, change the "logging_level" value in the config file to one of the values above
+The logging level is set using the LOG_LEVEL environment variable.
+
+The easiest way set this quickly is to padd to the command line:
+
+    `LOG_LEVEL=DEBUG ./dev.sh `
