@@ -23,16 +23,16 @@ class DeviceManager():
         for device in devices['listeners']:
             self.add_listener_device(device)
 
-    def removeDeviceById(self, id):
+    def remove_device_by_id(self, id):
         # will look through both trigger_devices and trigger_devices collections
         logging.debug("Removing device: " + id)
 
-    def removeAllDevices(self, id):
+    def remove_all_devices(self, id):
         self.trigger_devices = []
         self.listener_devices = []
         logging.debug("All devices removed!")
 
-    def printDeviceList(self):
+    def print_device_list(self):
         print("\n" + "DEVICES:" + "\n" + "===================================")
         print("Triggers:")
         for device_id in self.trigger_devices:

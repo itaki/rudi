@@ -6,23 +6,23 @@ class ToolManager():
 
     tools = []
 
-    def addTool(self, tool_config):
+    def add_tool(self, tool_config):
         #self.tools.append(Tool(tool['id'], tool['device_links']['triggers'], tool['device_links']['listeners']))
         self.tools.append(Tool(tool_config))
 
-    def addTools(self, tools):
+    def add_tools(self, tools):
         for tool in tools:
-            self.addTool(tool)
+            self.add_tool(tool)
 
-    def removeToolById(self, id):
+    def remove_tool_by_id(self, id):
         # may need to convert tools collection to dict in order to do this without looping through all list items
         logging.debug("Removing device: " + id)
 
-    def removeAllTools(self):
+    def remove_all_tools(self):
         self.tools = []
         logging.debug("All tools removed!")
 
-    def printToolList(self):
+    def print_tool_list(self):
         print("\n" + "TOOLS:" + "\n" + "===================================")
         for tool in self.tools:
             print("\"" + tool.id + "\"")

@@ -15,7 +15,7 @@ with open('config.json') as json_file:
 shop1 = shop.Shop(config)
 
 # manually start a trigger
-shop1.startTrigger("table-saw-voltage-detector")
+shop1.start_trigger("table-saw-voltage-detector")
 
 # manually start a tool
 #shop1.startTool("table-saw-middle")

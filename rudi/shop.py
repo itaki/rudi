@@ -17,32 +17,32 @@ class Shop():
         if not self.validate_config(shop_config):
             raise Exception("Invalid Shop Config")
         
-        self.deviceManager = device.DeviceManager()
-        self.toolManager = tool.ToolManager()
-        self.loadConfig(shop_config)
+        self.device_manager = device.DeviceManager()
+        self.tool_manager = tool.ToolManager()
+        self.load_config(shop_config)
         logging.debug("Shop started!")
 
-        print("\n" + "Welcome to " + self.getShopName())
+        print("\n" + "Welcome to " + self.get_shop_name())
         print("===================================" + "\n")
         #self.deviceManager.printDeviceList()
         #self.toolManager.printToolList()
 
-    def loadConfig(self, data):    
+    def load_config(self, data):    
         self.config = data
-        self.deviceManager.add_devices_from_config(self.config['devices'])
-        self.toolManager.addTools(self.config['tools'])
+        self.device_manager.add_devices_from_config(self.config['devices'])
+        self.tool_manager.add_tools(self.config['tools'])
         logging.debug("Config loaded!")
     
     def validate_config(self, shop_config):
         return True
 
-    def getShopName(self):
+    def get_shop_name(self):
         return self.config['info'][0]['name']
 
-    def startTrigger(self, device_id):
+    def start_trigger(self, device_id):
         ee.emit(ShopEvents.TRIGGER_DEVICE_START_REQUEST, device_id)
     
-    def startTool(self, tool):
+    def start_tool(self, tool):
         ee.emit(ShopEvents.TOOL_START_REQUEST, tool)
 
 class ShopEvents():
