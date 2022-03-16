@@ -1,0 +1,528 @@
+{
+    "info" : [
+        { "name" : "Mike's Realistically Built Out Shop" }
+    ],
+    "devices" : {
+        "triggers" : [
+            {
+                "label" : "Table Saw Voltage Detector",
+                "id" : "table-saw-voltage-detector",
+                "type" : "AD_Converter",
+                "physical_location" : "Table saw plug",
+                "connection" : {
+                    "location" : "Island branch plug",
+                    "bus" : "I2C",
+                    "model" : "ADS1115",
+                    "address" : { 
+                        "board" : 73,
+                        "pin" : "P0"
+                    }                
+                }
+            },
+            {
+                "label" : "Table Saw GUI Button",
+                "id" : "table-saw-gui-button",
+                "type" : "GUI_Tool_Button"               
+            },
+            {
+                "label" : "Miter Saw Voltage Detector",
+                "id" : "miter-saw-voltage-detector",
+                "type" : "AD_Converter",
+                "physical_location" : "Miter Saw Plug",
+                "connection" : {
+                    "location" : "AD board attached to pi",
+                    "bus" : "I2C",
+                    "model" : "ADS1115",
+                    "address" : { 
+                        "board" : 72,
+                        "pin" : "P0"
+                    }
+                }
+            },
+            {
+                "label" : "Miter Saw Left Button",
+                "id" : "miter-saw-left-button",
+                "type" : "Button",
+                "physical_location" : "Left button on board above miter saw",
+                "connection" : {
+                    "location" : "PI GPIO",
+                    "bus" : "GPIO",
+                    "address" : { 
+                        "pin" : 9
+
+                    }
+                    
+                }
+            },
+            {
+                "label" : "Miter Saw Right Button",
+                "id" : "miter-saw-right-button",
+                "type" : "Button",
+                "physical_location" : "Right button on board above miter saw",
+                "connection" : {
+                    "location" : "PI GPIO",
+                    "bus" : "GPIO",
+                    "address" : { 
+                        "pin" : 10
+
+                    }
+                    
+                }
+            },
+            {
+                "label" : "Floor Sweep Button",
+                "id" : "floor-sweep-button",
+                "type" : "Button",
+                "physical_location" : "Button next to pi",
+                "connection" : {
+                    "location" : "Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : {
+                        "board" : 32,
+                        "pin" : 5 
+                }
+                }
+            },
+            {
+                "label" : "Sanding Table Button",
+                "id" : "sanding-table-button",
+                "type" : "Button",
+                "physical_location" : "Button on sanding workbench",
+                "connection" : {
+                    "location" : "Center shop branch breakout board",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : {
+                        "board" : 33,
+                        "pin" : 2 
+                }
+                }
+            }
+        ],
+        "listeners" : [
+            {
+                "label" : "Dust Collector",
+                "id" : "dust-collector",
+                "type" : "DustCollector",
+                "physical_location" : "In the shop closet",
+                "connection" : {
+                    "location" : "PI GPIO",
+                    "bus" : "GPIO",
+                    "address" : {
+                        "pin" : 12
+                    }
+                },
+                "settings" : {
+                    "minimum_global_runtime_seconds" : "10",
+                    "runtime_after_tool_stops_seconds" : "3"
+                }
+            },
+            {
+                "label" : "Center Miter Gate",
+                "id" : "center-miter-gate",
+                "type" : "Gate",
+                "physical_location" : "Directly underneath miter saw",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 0
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Left Miter Gate",
+                "id" : "left-miter-gate",
+                "type" : "Gate",
+                "physical_location" : "To the left underneath miter saw",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 1
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Rigth Miter Gate",
+                "id" : "right-miter-gate",
+                "type" : "Gate",
+                "physical_location" : "To the right underneath miter saw",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 2
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Floor Sweep",
+                "id" : "floor-sweep-gate",
+                "type" : "Gate",
+                "physical_location" : "Underneath miter saw",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 5
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "South Branch Gate",
+                "id" : "south-branch-gate",
+                "type" : "Gate",
+                "physical_location" : "Right before bandsaw gate",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 3
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Center Branch Gate",
+                "id" : "center-branch-gate",
+                "type" : "Gate",
+                "physical_location" : "Halfway up the column from main branch",
+                "connection" : {
+                    "location" : "Servo Hat attached to pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pin" : 4
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Tablesaw Gate",
+                "id" : "tablesaw-gate",
+                "type" : "Gate",
+                "physical_location" : "Back of the table saw",
+                "connection" : {
+                    "location" : "Servo hat at island intake",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 65,
+                        "pin" : 0
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Tablesaw Hood Gate",
+                "id" : "tablesaw-hood-gate",
+                "type" : "Gate",
+                "physical_location" : "Extension arm",
+                "connection" : {
+                    "location" : "Servo hat at center intake",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 65,
+                        "pin" : 2
+                    }
+                },
+                "settings" : {
+                    "is_open" : false,
+                    "min" : "50",
+                    "max" : "125"
+                }
+            },
+            {
+                "label" : "Center Island Light",
+                "id" : "center-island-light",
+                "type" : "Light",
+                "physical_location" : "Island drop",
+                "connection" : {
+                    "location" : "GPIO expander at center intake",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : { 
+                        "board" : 33,
+                        "pin" : 0
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            },
+            {
+                "label" : "Left Miter Button LED",
+                "id" : "left-miter-button-led",
+                "type" : "PWMLed",
+                "physical_location" : "Left button on board above miter saw",
+                "connection" : {
+                    "location" : "GPIO expander on the pi",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : { 
+                        "board" : 32,
+                        "pin" : 0
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            },
+            {
+                "label" : "Right Miter Button LED",
+                "id" : "right-miter-button-led",
+                "type" : "PWMLed",
+                "physical_location" : "Right button on board above miter saw",
+                "connection" : {
+                    "location" : "GPIO expander on the pi",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : { 
+                        "board" : 32,
+                        "pin" : 1
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            },
+            {
+                "label" : "Hose Button RGBLED",
+                "id" : "hose-button-rgbled",
+                "type" : "RGBLed",
+                "physical_location" : "Left button on button board next to pi",
+                "connection" : {
+                    "location" : "GPIO expander on the pi",
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" : { 
+                        "board" : 64,
+                        "pins" : [0, 1, 2]
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            },
+            {
+                "label" : "Floor Sweep Button RGBLED",
+                "id" : "floor-sweep-button-led",
+                "type" : "RGBLed",
+                "physical_location" : "Right button on button board next to pi",
+                "connection" : {
+                    "location" : "GPIO expander on the pi",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : { 
+                        "board" : 64,
+                        "pins" : [3, 4, 5]
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            },
+            {
+                "label" : "Sanding Table RGBLED",
+                "id" : "sanding-table-rgb-led",
+                "type" : "RGBLed",
+                "physical_location" : "Button on center island",
+                "connection" : {
+                    "location" : "Servo hat at center intake",
+                    "bus" : "I2C",
+                    "model" : "MCP23017",
+                    "address" : { 
+                        "board" : 65,
+                        "pins" : [6, 7, 8]
+                    }
+                },
+                "settings" : {
+                    "is_on" : false
+
+                }
+            }
+        ]
+    },
+    "tools": [
+        {
+            "name" : "Table Saw",
+            "id" : "table-saw",
+            "device_links" : {
+                "triggers" : [ "table-saw-voltage-detector" ],
+                "listeners" : [
+                    {
+                        "id" : "dust-collector",
+                        "settings" : {
+                            "is_on" : true,
+                            "runtime_after_tool_stops_seconds" : "30"
+                        }
+                    },
+                    {
+                        "id" : "tablesaw-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    },
+                    {
+                        "id" : "tablesaw-hood-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    },
+                    {
+                        "id" : "center-island-light",
+                        "settings" : {
+                            "is_on" : true
+                        }
+                    },
+                    {
+                        "id" : "center-branch-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name" : "Miter Saw Center",
+            "id" : "miter-saw-center",
+            "device_links" : {
+                "triggers" : [ "miter-saw-voltage-detector"],
+                "listeners" : [
+                    {
+                        "id" : "dust-collector",
+                        "settings" : {
+                            "is_on" : true,
+                            "runtime_after_tool_stops_seconds" : "45"
+                        }
+                    },
+                    {
+                        "id" : "center-miter-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name" : "Miter Saw Left",
+            "id" : "miter-saw-left",
+            "device_links" : {
+                "triggers" : [ "miter-saw-left-button"],
+                "listeners" : [
+                    {
+                        "id" : "left-miter-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name" : "Miter Saw Right",
+            "id" : "miter-saw-right",
+            "device_links" : {
+                "triggers" : [ "miter-saw-right-button"],
+                "listeners" : [
+                    {
+                        "id" : "right-miter-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name" : "Floor Sweep",
+            "id" : "floor-sweep",
+            "device_links" : {
+                "triggers" : [ "floor-sweep-button"],
+                "listeners" : [
+                    {
+                        "id" : "dust-collector",
+                        "settings" : {
+                            "is_on" : true,
+                            "runtime_after_tool_stops_seconds" : "45"
+                        }
+                    },
+                    {
+                        "id" : "floor-sweep-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name" : "Floor Sweep",
+            "id" : "floor-sweep",
+            "device_links" : {
+                "triggers" : [ "floor-sweep-button"],
+                "listeners" : [
+                    {
+                        "id" : "floor-sweep-gate",
+                        "settings" : {
+                            "is_open" : true
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
