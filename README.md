@@ -9,7 +9,7 @@ This project was built and tested using Anaconda on a Mac. The instructions belo
 
 1. Make sure you have a Python 3.9 environment setup
 
-    conda create --name rudi python=3.9
+    `conda create --name rudi python=3.9`
 
 2. Create a config.json file (see example) and save in the project root
 
