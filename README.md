@@ -35,6 +35,8 @@ This will let the app constantly reload while you develop, saving you endless ke
 
 If not, get it from (https://brew.sh/)
 
+    `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+
 #### Install entr:
 
     `brew install entr`
