@@ -9,7 +9,7 @@ This project was built and tested using Anaconda on a Mac. The instructions belo
 
 1. Make sure you have a Python 3.9 environment setup
 
-    `conda create --name rudi python=3.9`
+    conda create --name rudi python=3.9
 
 2. Create a config.json file (see example) and save in the project root
 
@@ -31,7 +31,7 @@ This will let the app constantly reload while you develop, saving you endless ke
 
 #### Make sure you have Homebrew installed:
 
-    `brew -v`
+    brew -v
 
 If not, get it from (https://brew.sh/)
 
@@ -39,12 +39,13 @@ If not, get it from (https://brew.sh/)
 
 #### Install entr:
 
-    `brew install entr`
+    brew install entr
 
 ### When you wanna do some dev:
 
 #### Run:
-    `./dev.sh`
+    
+    ./dev.sh
 
 Pro Tip: Run this from the terminal window inside VS Code
 
@@ -52,7 +53,7 @@ Note: This refresh only triggers for files inside the "rudi" folder and will not
 
 If you get a permission error you may need to run:
 
-    `chmod u+x dev.sh`
+    chmod u+x dev.sh
 
 ---
 
@@ -70,4 +71,4 @@ The logging level is set using the LOG_LEVEL environment variable.
 
 The easiest way set this quickly is to add to the command line:
 
-    `LOG_LEVEL=DEBUG ./dev.sh `
+    LOG_LEVEL=DEBUG ./dev.sh
