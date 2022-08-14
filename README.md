@@ -9,47 +9,16 @@ RUDI uses Docker to insure that it will run the same on a Pi as on developer mac
 
 1. Make sure you have Docker installed and Docker-Compose installed
 
-2. Create a config.json file (see example) and save in the project root
+2. Create a config.json file in the `rudi-app` folder (see example)
 
-3. To build the image: `docker build -t rudi-app .`
+3. Run the system: `docker compose up --build`
 
-4. To run the image: `docker run -it --rm --name rudi-app-container rudi-app`
 
 ---
 
 ## Dev Setup (Mac)
 
-This will let the app constantly reload while you develop, saving you endless keystrokes!
-
-### Initial Setup
-
-#### Make sure you have Homebrew installed:
-
-    brew -v
-
-If not, get it from (https://brew.sh/)
-
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-
-#### Install entr:
-
-    brew install entr
-
-### When you wanna do some dev:
-
-#### Run:
-    
-    ./dev.sh
-
-Pro Tip: Run this from the terminal window inside VS Code
-
-Note: This refresh only triggers for files inside the "rudi" folder and will not notice newly created files.
-
-If you get a permission error you may need to run:
-
-    chmod u+x dev.sh
-
----
+New approach coming soon
 
 ## Logging
 
