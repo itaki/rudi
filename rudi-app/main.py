@@ -21,3 +21,17 @@ shop1.start_trigger("table-saw-voltage-detector")
 #shop1.startTool("table-saw-middle")
 
 
+
+import asyncio
+import time
+
+from websockets import connect
+
+async def hello(uri):
+    async with connect(uri) as websocket:
+        await websocket.send("Hello world!")
+        await websocket.recv()
+
+while True:
+    time.sleep(1)
+    asyncio.run(hello("ws://rudi-admin:8080"))

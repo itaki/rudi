@@ -1,3 +1,0 @@
-adafruit-circuitpython-ads1x15
-circuitpython-servokit
-circuitpython-mcp230xx

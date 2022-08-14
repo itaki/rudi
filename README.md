@@ -3,23 +3,17 @@ A Raspberry Pi / Python based shop manager that mostly manages how tools and gat
 
 ---
 
-## Running Rudi Locally
+## Building and running RUDI
 
-This project was built and tested using Anaconda on a Mac. The instructions below assume you are using the same!
+RUDI uses Docker to insure that it will run the same on a Pi as on developer machines
 
-1. Make sure you have a Python 3.9 environment setup
-
-    `conda create --name rudi python=3.9`
+1. Make sure you have Docker installed and Docker-Compose installed
 
 2. Create a config.json file (see example) and save in the project root
 
-3. Run `python main.py`
+3. To build the image: `docker build -t rudi-app .`
 
----
-
-## Running Rudi on a Pi
-
-Same basic steps as running locally, more coming here soon!
+4. To run the image: `docker run -it --rm --name rudi-app-container rudi-app`
 
 ---
 
