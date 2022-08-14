@@ -2,8 +2,8 @@ services:
   rudi-app:
     build:
       context: ./rudi-app
-      args:
-        - LOG_LEVEL=DEBUG
+    environment:
+      - LOG_LEVEL=DEBUG
   rudi-admin:
     build:
       context: ./rudi-admin
