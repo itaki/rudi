@@ -14,10 +14,10 @@ class DustCollector(ListenerDevice):
 
         if "minimum_runtime_minutes" in self.config["settings"]:
             self.minimum_runtime_minutes = self.config["settings"]["minimum_runtime_minutes"]
-            logging.debug("Setting default minimum_runtime_minutes for " + self.config["label"] + " to " + self.minimum_runtime_minutes)
+            logging.info("Setting default minimum_runtime_minutes for " + self.config["label"] + " to " + self.minimum_runtime_minutes)
     
     def on_start(self):
-        logging.debug("Starting dust collector (" + self.config["id"] + ")")
+        logging.info("Starting dust collector (" + self.config["id"] + ")")
         # TODO: Talk GPIO and actually turn on dust collector
 
 
@@ -30,12 +30,12 @@ class Gate(ListenerDevice):
 
         if "open_pwm" in self.config["settings"]:
             self.open_pwm = self.config["settings"]["open_pwm"]
-            logging.debug("Setting open_pwm for " + self.config["label"] + " to " + self.open_pwm)
+            logging.info("Setting open_pwm for " + self.config["label"] + " to " + self.open_pwm)
         
         if "closed_pwm" in self.config["settings"]:
             self.closed_pwm = self.config["settings"]["closed_pwm"]
-            logging.debug("Setting closed_pwm for " + self.config["label"] + " to " + self.closed_pwm)
+            logging.info("Setting closed_pwm for " + self.config["label"] + " to " + self.closed_pwm)
     
     def on_start(self):
-        logging.debug("Starting gate (" + self.config["id"] + ")")
+        logging.info("Starting gate (" + self.config["id"] + ")")
         # TODO: Talk GPIO and actually set the pwm

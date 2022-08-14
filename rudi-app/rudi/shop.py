@@ -20,7 +20,7 @@ class Shop():
         self.device_manager = device.DeviceManager()
         self.tool_manager = tool.ToolManager()
         self.load_config(shop_config)
-        logging.debug("Shop started!")
+        logging.info("Shop started!")
 
         print("\n" + "Welcome to " + self.get_shop_name())
         print("===================================" + "\n")
@@ -31,7 +31,7 @@ class Shop():
         self.config = data
         self.device_manager.add_devices_from_config(self.config['devices'])
         self.tool_manager.add_tools(self.config['tools'])
-        logging.debug("Config loaded!")
+        logging.info("Config loaded!")
     
     def validate_config(self, shop_config):
         return True

@@ -16,11 +16,11 @@ class ToolManager():
 
     def remove_tool_by_id(self, id):
         # may need to convert tools collection to dict in order to do this without looping through all list items
-        logging.debug("Removing device: " + id)
+        logging.info("Removing device: " + id)
 
     def remove_all_tools(self):
         self.tools = []
-        logging.debug("All tools removed!")
+        logging.info("All tools removed!")
 
     def print_tool_list(self):
         print("\n" + "TOOLS:" + "\n" + "===================================")
@@ -47,16 +47,16 @@ class Tool():
         self.config = tool_config
         shop.ee.on(shop.ShopEvents.TOOL_START_REQUEST, self.request_listener)
         shop.ee.on(shop.ShopEvents.TRIGGER_DEVICE_STARTED, self.trigger_start_listener)
-        logging.debug("Tool Added: " + self.config["id"])
+        logging.info("Tool Added: " + self.config["id"])
     
     def request_listener(self, tool_id):
         # handles direct tool start request events
         if tool_id == self.config["id"]:
-            logging.debug(self.config["id"] + " heard tool start request")
+            logging.info(self.config["id"] + " heard tool start request")
             shop.ee.emit(shop.ShopEvents.TOOL_STARTED, pickle.dumps(self.config))
     
     def trigger_start_listener(self, trigger_id):
         # handles trigger device start events
         if trigger_id in self.config["device_links"]["triggers"]:
-            logging.debug(self.config["id"] + " heard trigger start of: " + trigger_id)
+            logging.info(self.config["id"] + " heard trigger start of: " + trigger_id)
             shop.ee.emit(shop.ShopEvents.TOOL_STARTED, pickle.dumps(self.config))

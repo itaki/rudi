@@ -14,7 +14,7 @@ var ws = new WebSocket('ws://127.0.0.1:8080');
 ws.onopen = function(event) 
 {
    console.log('open: %s', event);
-   ws.send('something');
+   ws.send('Hello from Rudi Admin!');
 };
 ws.onmessage = function(message) 
 {

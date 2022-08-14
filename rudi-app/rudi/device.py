@@ -10,11 +10,11 @@ class DeviceManager():
     listener_devices = {}
 
     def add_trigger_device(self, device):
-        logging.debug("Adding trigger device: " + device['id'])
+        logging.info("Adding trigger device: " + device['id'])
         self.trigger_devices[device["id"]] = DeviceFactory(device)
 
     def add_listener_device(self, device):
-        logging.debug("Adding listener device: " + device['id'])
+        logging.info("Adding listener device: " + device['id'])
         self.listener_devices[device["id"]] = DeviceFactory(device)
 
     def add_devices_from_config(self, devices):
@@ -25,12 +25,12 @@ class DeviceManager():
 
     def remove_device_by_id(self, id):
         # will look through both trigger_devices and trigger_devices collections
-        logging.debug("Removing device: " + id)
+        logging.info("Removing device: " + id)
 
     def remove_all_devices(self, id):
         self.trigger_devices = []
         self.listener_devices = []
-        logging.debug("All devices removed!")
+        logging.info("All devices removed!")
 
     def print_device_list(self):
         print("\n" + "DEVICES:" + "\n" + "===================================")
@@ -68,7 +68,7 @@ class TriggerDevice(Device):
 
     def __init__(self, device_config):
         self.config = device_config
-        logging.debug("Trigger device added: " + self.config["label"])
+        logging.info("Trigger device added: " + self.config["label"])
         shop.ee.on(shop.ShopEvents.TRIGGER_DEVICE_START_REQUEST, self.request_listener)
         self.on_init()
     
@@ -79,7 +79,7 @@ class TriggerDevice(Device):
     def request_listener(self, device_id):
         # listens for trigger requests that did not come from GPIO
         if (self.config["id"] == device_id):
-            logging.debug(self.config["id"] + " heard trigger request")
+            logging.info(self.config["id"] + " heard trigger request")
             self.on_trigger()
     
     def hardware_listener(self):
@@ -87,7 +87,7 @@ class TriggerDevice(Device):
         self.on_trigger()
     
     def on_trigger(self):
-        logging.debug(self.config["id"] + " was triggered")
+        logging.info(self.config["id"] + " was triggered")
         shop.ee.emit(shop.ShopEvents.TRIGGER_DEVICE_STARTED, self.config["id"])
 
 
@@ -99,7 +99,7 @@ class ListenerDevice(Device):
     def __init__(self, device_config):
         self.config = device_config
         self.orig_settings = device_config["settings"]
-        logging.debug("Listener device added: " + self.config["label"])
+        logging.info("Listener device added: " + self.config["label"])
         shop.ee.on(shop.ShopEvents.TOOL_STARTED, self.tool_start_listener)
         self.on_init()
 
@@ -117,7 +117,7 @@ class ListenerDevice(Device):
             if listener["id"] == self.config["id"]:
                 # configure tool-specific settings using device originals as starting point
                 self.config["settings"] = merge_dicts(listener["settings"], self.orig_settings)
-        logging.debug(self.config["label"] + " heard start of " + incoming_tool_config["id"] + " tool.")
+        logging.info(self.config["label"] + " heard start of " + incoming_tool_config["id"] + " tool.")
         shop.ee.emit(shop.ShopEvents.LISTENER_DEVICE_STARTED, self.config["id"])
         self.on_start()
     

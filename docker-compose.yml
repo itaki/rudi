@@ -3,7 +3,7 @@ services:
     build:
       context: ./rudi-app
     environment:
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     depends_on:
       - "rudi-admin"
   rudi-admin:
