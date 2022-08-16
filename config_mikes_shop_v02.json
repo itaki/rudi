@@ -25,7 +25,7 @@
             "preferences" : 
                 {            
                     "broadcast" : true,
-                    "subscriptions" : [],
+                    "subscriptions" : []
                 
                 }
         },
@@ -140,7 +140,7 @@
                         ],
                     "on" : 
                         {
-                            type : "pulse",
+                            "type" : "pulse",
                             "rhigh" : 100,
                             "ghigh" : 100,
                             "bhigh" : 100,
@@ -150,14 +150,14 @@
                         },
                     "off" : 
                         {
-                            type : "steady",
+                            "type" : "steady",
                             "red" : 10,
                             "green" : 10,
-                            "blue" : 10,
+                            "blue" : 10
                         },
                     "shutdown" : 
                         {
-                            type : "pulse",
+                            "type" : "pulse",
                             "rhigh" : 80,
                             "ghigh" : 40,
                             "bhigh" : 100,
@@ -247,7 +247,7 @@
                     "subscriptions" : 
                         [
                             "miter-saw-voltage-detector",
-                            "miter-saw-left-button"
+                            "miter-saw-left-button",
                             "table-saw-voltage-detector",
                             "band-saw-voltage-detector",
                             "shop-hose-button"
@@ -255,6 +255,6 @@
                     "shutdown" : 300
                 }
 
-        }, 
+        }
     ]
 }
