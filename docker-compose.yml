@@ -1,0 +1,15 @@
+services:
+  rudi-app:
+    build:
+      context: ./rudi-app
+    environment:
+      - LOG_LEVEL=INFO
+    depends_on:
+      - "rudi-admin"
+  rudi-admin:
+    build:
+      context: ./rudi-admin
+    ports:
+      - "8080:8080"
+      - "80:80"
+      

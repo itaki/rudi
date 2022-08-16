@@ -11,7 +11,7 @@ class VoltageDetector(TriggerDevice):
     base_voltage = 10
 
     def on_init(self):
-        logging.debug("Voltage Detector added")
+        logging.info("Voltage Detector added")
 
 
 class LEDButton(TriggerDevice):
@@ -20,7 +20,7 @@ class LEDButton(TriggerDevice):
     on_color = "red"
 
     def on_init(self):
-        logging.debug("LED button added")
+        logging.info("LED button added")
 
     def on_trigger(self):
-        logging.debug("Turning LED button " + self.on_color)
+        logging.info("Turning LED button " + self.on_color)
