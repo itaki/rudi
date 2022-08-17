@@ -2,41 +2,12 @@
     "info" : [
         { "name" : "Mike's Realistically Built Out Shop" }
     ],
-    "hardware" [
-
-    ],
-    "devices" : [
+    "hardware" : [
         {
-            "label" : "Miter Saw Voltage sensor",
-            "id" : "miter-saw-voltage-sensor",
-            "type" : "voltage_sensor",
-            "physical_location" : "Table saw plug",
-            "connection" : 
-                {
-                    "bus" : "I2C",
-                    "model" : "ACS712",
-                    "address" : 
-                        {                                                                                                                                                                                                                                                                                                                                                                                            
-                            "board" : 73,
-                            "pin" : "P0"
-                        },
-                    "required" : 
-                        [
-
-                        ]                
-                },
-            "preferences" : 
-                {            
-                    "broadcast" : true,
-                    "subscriptions" : []
-                
-                }
-        },
-        {
-            "label" : "Westside AD Converter",
-            "id" : "westside-ad-converter",
+            "label" : "WestWall AD Converter",
+            "id" : "west-wall-ad-converter",
             "type" : "ad_converter",
-            "physical_location" : "Attached to PI",
+            "physical_location" : "Next to the pi",
             "connection" : 
                 {
                     "bus" : "I2C",
@@ -51,16 +22,140 @@
                             "Adafruit-extended-bus", 
                             "adafruit-circuitpython-ads1x15"
                         ] 
+                }
+        },   
+        {
+            "label" : "Island AD Converter",
+            "id" : "island-ad-converter",
+            "type" : "ad_converter",
+            "physical_location" : "Hi up on island brance",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "model" : "ADS1115",
+                    "address" :    
+                        { 
+                            "board" : 73
+                        },
+                    "required" : 
+                        [
+                            "pyusb",
+                            "Adafruit-extended-bus", 
+                            "adafruit-circuitpython-ads1x15"
+                        ] 
+                }
+        }, 
+        {
+            "label" : "Bench AD Converter",
+            "id" : "bench-ad-converter",
+            "type" : "ad_converter",
+            "physical_location" : "On the bench at the island branch",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "model" : "ADS1115",
+                    "address" :    
+                        { 
+                            "board" : 74
+                        },
+                    "required" : 
+                        [
+                            "pyusb",
+                            "Adafruit-extended-bus", 
+                            "adafruit-circuitpython-ads1x15"
+                        ] 
+                }
+        },
+        {
+            "label" : "West Wall Servo Hat",
+            "id" : "west-wall-servo-hat",
+            "type" : "servohat",
+            "physical_location" : "Attached directly to pi",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" :    
+                        {   
+                            "board" : 64
+                        },
+                    "required" : 
+                        [
+                            "adafruit-circuitpython-servokit"
+                        ] 
+                }
+        },
+        {
+            "label" : "Island Servo Hat",
+            "id" : "island-servo-hat",
+            "type" : "servohat",
+            "physical_location" : "At the island",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "model" : "PCA9685",
+                    "address" :    
+                        {   
+                            "board" : 67
+                        },
+                    "required" : 
+                        [
+                            "adafruit-circuitpython-servokit"
+                        ] 
+                }
+        }
+
+    ],
+    "devices" : [
+        {
+            "label" : "Miter Saw Voltage sensor",
+            "id" : "miter-saw-voltage-sensor",
+            "type" : "voltage_sensor",
+            "physical_location" : "Mitersaw plug",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "address" : 
+                        {
+                            "id" : "west-wall-ad-converter",                                                                                                                                                                                                                                                                                                                                                                                        
+                            "board" : 73,
+                            "pin" : "P0"
+                        },
+                    "required" : 
+                        [
+
+                        ]                
                 },
-            
             "preferences" : 
                 {
-                    "broadcast" : false,
-                    "subscriptions" : [],  
-                    "no_of_measutements" : 15,
-                    "gain" : "2/3 (6.144 V)"
+                    "broadcast" : true,
+                    "subscriptions" : []
+                
                 }
-        },     
+        },
+        {
+            "label" : "Band Saw Voltage sensor",
+            "id" : "band-saw-voltage-sensor",
+            "type" : "voltage_sensor",
+            "physical_location" : "Band saw plug",
+            "connection" : 
+                {
+                    "bus" : "I2C",
+                    "address" : 
+                        {
+                            "id" : "west-wall-ad-converter",                                                                                                                                                                                                                                                                                                                                                                                 
+                            "board" : 73,
+                            "pin" : "P0"
+                        }
+                 },
+            "preferences" : 
+                {            
+                    "broadcast" : true,
+                    "subscriptions" : []
+                
+                }
+        },
+       
         {
             "label" : "Left Miter Saw Button",
             "id" : "left-miter-saw-button",
@@ -68,14 +163,11 @@
             "physical_location" : "Above miter saw on left",
             "connection" : 
                 {
-                    "bus" : "GPIO_PIN",
+                    "bus" : "GPIO",
                     "address" :    
                         { 
                             "pin" : 22
-                        },
-                    "required" : 
-                        [ 
-                        ]
+                        }
                 },
             
             "preferences" : 
@@ -97,10 +189,7 @@
                     "address" :    
                         { 
                             "pin" : 21
-                        },
-                    "required" : 
-                        [
-                        ]
+                        }
                 },
             
             "preferences" : 
@@ -127,11 +216,7 @@
                             "rpin" : 17,
                             "gpin" : 18, 
                             "bpin" : 19
-                        },
-                    "required" : 
-                        [
-                            "gpiozero"
-                        ]
+                        }
                 },
             
             "preferences" : 
@@ -173,32 +258,6 @@
 
         },  
         {
-            "label" : "West Side Servo Hat",
-            "id" : "west-side-servo-hat",
-            "type" : "servohat",
-            "physical_location" : "Attached directly to pi",
-            "connection" : 
-                {
-                    "bus" : "I2C",
-                    "address" :    
-                        {   
-                            "board" : 64
-                        },
-                    "required" : 
-                        [
-                            "adafruit-circuitpython-servokit"
-                        ] 
-                },
-
-            "preferences" : 
-                {
-                    "broadcast" : false,
-                    "subscriptions" : [],
-                    "shutdown": 45
-                }
-
-        },
-        {
             "label" : "Miter Saw Gate",
             "id" : "miter-saw-gate",
             "type" : "gate",
@@ -208,12 +267,10 @@
                     "bus" : "I2C",
                     "address" :    
                         { 
+                            "id" : "island-servo-hat",
                             "board" : 64,
                             "pin" : 21
-                        },
-                    "required" : 
-                        [
-                        ]
+                        }
                 },
             "preferences" : 
                 {  
@@ -238,12 +295,8 @@
                     "address" :    
                         { 
                             "pin" : 20
-                        },
-                    "required" : 
-                        [
-                        ]
+                        }
                 },
-            
             "preferences" : 
                 {  
                     "broadcast" : true,
@@ -257,7 +310,6 @@
                         ],
                     "shutdown" : 300
                 }
-
         }
     ]
 }
