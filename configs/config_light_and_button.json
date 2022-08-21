@@ -7,7 +7,7 @@
         {
             "label" : "Left Miter Saw Button",
             "id" : "left-miter-saw-button",
-            "type" : "simple_button",
+            "type" : "SimpleButton",
             "physical_location" : "Above miter saw on left",
             "connection" : {
                 "bus" : "GPIO",
@@ -21,7 +21,7 @@
         {
             "label" : "Miter Saw Light",
             "id" : "miter-saw-light",
-            "type" : "led_light",
+            "type" : "LedLight",
             "physical_location" : "light attached to pi",
             "connection" : {
                 "bus" : "GPIO",

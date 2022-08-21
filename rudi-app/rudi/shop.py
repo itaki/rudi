@@ -5,9 +5,10 @@ import webbrowser
 from pymitter import EventEmitter
 from . import device
 from . import tool
+from . import event
 
 
-ee = EventEmitter()
+em = event.EventManager()
 
 class Shop():
 
