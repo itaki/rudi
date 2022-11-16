@@ -13,15 +13,19 @@ class EventManager():
 
     ee = EventEmitter()    
 
-    def subscribe(self, event, action):
+    def subscribe(self, listen_to, listen_for, callback):
 
-        self.ee.on(event, action)
+        global_event = listen_to + "." + listen_for
+        self.ee.on(global_event, callback)
+        logging.debug("Event Subscription Created: when " + global_event + " is heard, " + callback + " will be called")
 
         # asyncio.run(hello("ws://rudi-admin:8080"))
     
-    def emit(self, event, source, payload):
+    def emit(self, source, event, payload):
 
-        self.ee.emit(event, source, payload)
+        global_event = source + "." + event
+        self.ee.emit(global_event, payload)
+        logging.debug("Event Emitted: " + global_event)
 
         # asyncio.run(hello("ws://rudi-admin:8080"))
 

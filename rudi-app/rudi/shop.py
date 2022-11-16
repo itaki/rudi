@@ -31,8 +31,7 @@ class Shop():
     def load_config(self, data):    
         self.config = data
         self.device_manager.add_devices_from_config(self.config['devices'])
-        self.tool_manager.add_tools(self.config['tools'])
-        logging.info("Config loaded!")
+        logging.debug("Shop config finished loading")
     
     def validate_config(self, shop_config):
         return True

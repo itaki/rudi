@@ -9,7 +9,7 @@ class DeviceManager():
     devices = {}
 
     def add_device(self, device):
-        logging.info("Adding device: " + device['id'])
+        logging.debug("Adding device: " + device['id'])
         self.devices[device["id"]] = DeviceFactory(device)
 
     def add_devices_from_config(self, devices):
@@ -45,10 +45,11 @@ class Device():
     def __init__(self, device_config):
         self.config = device_config
 
+        self.on_init()
+
         #loop thru the provided config and subscribe to specified events
         for sub in self.config['subscriptions']:
-            shop.em.subscribe(sub['listen_to'], sub['listen_for'], self.do_action(sub['do_this']))
-        self.on_init()
+            shop.em.subscribe(sub['listen_to'], sub['listen_for'], self.actions[sub['do_this']])
     
     def on_init(self):
         # a safe place for subclasses to add init code without needed to override init
@@ -61,16 +62,12 @@ class Device():
     
     def register_action(self, action, handler):
         # registers an action that this device class can do and provides name of handler function
+        logging.debug("Registering action: " + self.config['id'] + "." + action)
         self.actions[action] = handler
     
     def emit_event(self, event, payload) :
         # used by subclass implementation can be used by actions or other class logic
-        shop.em.emit(event, self.config['id'], payload)
-    
-    def do_action(self, action) :
-        # call the handler function for the provided action name
-        handler = getattr(self, action)
-        handler()
+        shop.em.emit(self.config['id'], event, payload)
 
     def get_actions(self):
         return self.actions

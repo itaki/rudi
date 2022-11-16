@@ -60,7 +60,6 @@ class LedLight(Device):
         # if so call:
         self.turn_off_light_hard()
 
-
     def turn_off_light_hard(self) :
         # do GPIO stuff to turn off light
         self.light_is_on = False
