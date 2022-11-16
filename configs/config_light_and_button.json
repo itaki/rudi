@@ -36,7 +36,7 @@
             "subscriptions" : [
                 {
                     "listen_to" : "left-miter-saw-button",
-                    "listen_for" : "BUTTON_PRESSED",
+                    "listen_for" : "PRESSED",
                     "do_this" : "TURN_ON"
                 }
             ]

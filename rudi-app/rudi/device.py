@@ -58,6 +58,7 @@ class Device():
 
     def register_event(self, event):
         # registers an event that this device class can emit
+        logging.debug("Registering action: " + self.config['id'] + "." + event)
         self.events.append(event)
     
     def register_action(self, action, handler):

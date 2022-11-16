@@ -33,9 +33,9 @@ class LedLight(Device):
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
 
-        self.register_action("TURN_ON", "turn_on_light")
-        self.register_action("TURN_OFF_SOFT", "turn_off_light_soft")
-        self.register_action("TURN_OFF_HARD", "turn_off_light_hard")
+        self.register_action("TURN_ON", self.turn_on_light)
+        self.register_action("TURN_OFF_SOFT", self.turn_off_light_soft)
+        self.register_action("TURN_OFF_HARD", self.turn_off_light_hard)
 
         # add code to override auto turnoff defualt values if found in preferences
 
@@ -50,7 +50,7 @@ class LedLight(Device):
 
         self.emit_event("READY", {})
     
-    def turn_on_light(self) :
+    def turn_on_light(self, args) :
         # do GPIO stuff to turn on light
         self.light_is_on = True
         self.emit_event("TURNED_ON", {})
