@@ -39,7 +39,7 @@ def DeviceFactory(device):
 class Device():
     
     config = {} # populated from config file at time of instantiation
-    actions = {} # acttions that this device CAN do, registered individually by subclass implementation
+    actions = {} # actions that this device CAN do, registered individually by subclass implementation
     events = [] # events that this device CAN emit, registered individually by subclass implementation
 
     def __init__(self, device_config):

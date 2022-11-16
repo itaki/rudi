@@ -1,194 +1,45 @@
 {
     "info" : [
-        { "name" : "Andy's Shop" }
+        { "name" : "Mike's light and button shop" }
     ],
-    "devices" : {
-        "triggers" : [
-            {
-                "label" : "Table Saw Voltage Detector",
-                "id" : "table-saw-voltage-detector",
-                "type" : "VoltageDetector",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPIO4", "GPIO5" ]
-                }
-            },
-            {
-                "label" : "Table Saw Left Button",
-                "id" : "table-saw-left-button",
-                "type" : "TriggerDevice",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPIO7", "GPIO8" ]
-                }
-            },
-            {
-                "label" : "Table Saw Foot Sweep Button",
-                "id" : "table-saw-foot-sweep-button",
-                "type" : "TriggerDevice",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPIO9", "GPI10" ]
-                }
-            }
-        ],
-        "listeners" : [
-            {
-                "label" : "Dust Collector",
-                "id" : "dust-collector",
-                "type" : "DustCollector",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPI11", "GPI12" ]
-                },
-                "settings" : {
-                    "minimum_global_runtime_minutes" : "10",
-                    "runtime_after_tool_stops_minutes" : "3"
-                }
-            },
-            {
-                "label" : "Gate A",
-                "id" : "gate-a",
-                "type" : "Gate",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPI13", "GPI14" ]
-                },
-                "settings" : {
-                    "is_open" : false,
-                    "open_pwm" : "90",
-                    "closed_pwm" : "180"
-                }
-            },
-            {
-                "label" : "Gate B",
-                "id" : "gate-b",
-                "type" : "Gate",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPI15", "GPI16" ]
-                },
-                "settings" : {
-                    "is_open" : false,
-                    "open_pwm" : "95",
-                    "closed_pwm" : "160"
-                }
-            },
-            {
-                "label" : "Gate C",
-                "id" : "gate-c",
-                "type" : "Gate",
-                "connection" : {
-                    "type" : "GPIO_PINS",
-                    "pins" : [ "GPI17", "GPI18" ]
-                },
-                "settings" : {
-                    "is_open" : false,
-                    "open_pwm" : "88",
-                    "closed_pwm" : "155"
-                }
-            }
-        ]
-    },
-    "tools": [
+    "hardware" : [],
+    "devices" : [
         {
-            "name" : "Table Saw (Middle Position)",
-            "id" : "table-saw-middle",
-            "device_links" : {
-                "triggers" : [ "table-saw-voltage-detector"],
-                "listeners" : [
-                    {
-                        "id" : "dust-collector",
-                        "settings" : {
-                            "runtime_after_tool_stops_minutes" : "5"
-                        }
-                    },
-                    {
-                        "id" : "gate-a",
-                        "settings" : {
-                            "is_open" : true
-                        }
-                    },
-                    {
-                        "id" : "gate-b",
-                        "settings" : {
-                            "is_open" : false
-                        }
-                    },
-                    {
-                        "id" : "gate-c",
-                        "settings" : {
-                            "is_open" : false
-                        }
-                    }
-                ]
-            }
+            "label" : "Left Miter Saw Button",
+            "id" : "left-miter-saw-button",
+            "type" : "SimpleButton",
+            "physical_location" : "Above miter saw on left",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 22
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
         },
         {
-            "name" : "Table Saw (Left Position)",
-            "id" : "table-saw-left-position",
-            "device_links" : {
-                "triggers" : [ "table-saw-left-button"],
-                "listeners" : [
-                    {
-                        "id" : "dust-collector",
-                        "settings" : {
-                            "min_time" : "20"
-                        }
-                    },
-                    {
-                        "id" : "gate-a",
-                        "settings" : {
-                            "position" : "open"
-                        }
-                    },
-                    {
-                        "id" : "gate-b",
-                        "settings" : {
-                            "position" : "open"
-                        }
-                    },
-                    {
-                        "id" : "gate-c",
-                        "settings" : {
-                            "position" : "closed"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "name" : "Table Saw Foot Sweep Only",
-            "id" : "table-saw-foot-sweep-only",
-            "device_links" : {
-                "triggers" : [ "table-saw-foot-sweep-button"],
-                "listeners" : [
-                    {
-                        "id" : "dust-collector",
-                        "settings" : {
-                            "min_time" : "30"
-                        }
-                    },
-                    {
-                        "id" : "gate-a",
-                        "settings" : {
-                            "position" : "open"
-                        }
-                    },
-                    {
-                        "id" : "gate-b",
-                        "settings" : {
-                            "position" : "open"
-                        }
-                    },
-                    {
-                        "id" : "gate-c",
-                        "settings" : {
-                            "position" : "open"
-                        }
-                    }
-                ]
-            }
+            "label" : "Miter Saw Light",
+            "id" : "miter-saw-light",
+            "type" : "LedLight",
+            "physical_location" : "light attached to pi",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 21
+                }
+            },
+            "preferences" : {
+                "auto_turn_enable" : true,
+                "auto_turn_off_duration" : 300
+            },
+            "subscriptions" : [
+                {
+                    "listen_to" : "left-miter-saw-button",
+                    "listen_for" : "BUTTON_PRESSED",
+                    "do_this" : "TURN_ON"
+                }
+            ]
         }
     ]
 }
