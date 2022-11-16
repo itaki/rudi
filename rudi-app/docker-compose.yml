@@ -1,0 +1,7 @@
+services:
+  rudi-app:
+    build:
+      context: .
+    environment:
+      - LOG_LEVEL=DEBUG
+      
