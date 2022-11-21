@@ -2,7 +2,9 @@
     "info" : [
         { "name" : "Mike's light and button shop" }
     ],
-    "hardware" : [],
+    "hardware" : {
+        "use_mock_pins" : true 
+    },
     "devices" : [
         {
             "label" : "Left Miter Saw Button",

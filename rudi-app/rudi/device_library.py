@@ -1,12 +1,14 @@
 import logging
-from rudi.device import Device
+from rudi.device import Device as RudiDevice
 from . import shop
+from gpiozero import Device, Button, LED
+
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
 
 
-class SimpleButton(Device):
+class SimpleButton(RudiDevice):
 
     def on_init(self):
         self.register_event("PRESSED")
@@ -14,13 +16,21 @@ class SimpleButton(Device):
         # add code here to setup hardware connection
         # GPIO.whatever(self.config.connection.whatever)
 
+        # Device.pin_factory = MockFactory()
+
+        led = LED(17)
+        button = Button(3)
+
+        # button.when_pressed = led.on
+        # button.when_released = led.off
+
         # when button press is detected, do this:
         # self.emit_event("PRESSED", {})
 
         self.emit_event("READY", {})
 
 
-class LedLight(Device):
+class LedLight(RudiDevice):
 
     light_is_on = False
 
@@ -67,7 +77,7 @@ class LedLight(Device):
 
 
 
-class VoltageDetector(Device):
+class VoltageDetector(RudiDevice):
     
     # needs more work
 
@@ -107,7 +117,7 @@ class VoltageDetector(Device):
     
 
 
-class DustCollector(Device):
+class DustCollector(RudiDevice):
 
     minimum_runtime_minutes = 10
 
@@ -137,7 +147,7 @@ class DustCollector(Device):
         self.emit_event("STOPPED", {})
     
 
-class Gate(Device):
+class Gate(RudiDevice):
 
     open_pwm = 0
     closed_pwm = 0
