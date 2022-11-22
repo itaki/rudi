@@ -1,9 +1,6 @@
 import logging
-from enum import Enum
-import webbrowser
 from pymitter import EventEmitter
-from . import device
-from . import tool
+import webbrowser
 import asyncio
 import time
 #from websockets import connect

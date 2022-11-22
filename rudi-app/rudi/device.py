@@ -1,6 +1,5 @@
 import sys
 import logging
-import pickle
 from . import shop as shop
 
 
