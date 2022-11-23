@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # inspiration : https://gist.github.com/grant-roy/49b2c19fa88dcffc46ab
 
 # Usage: From the repo root, run "sh utils/poll-build-run.sh"
