@@ -6,7 +6,7 @@
 
 
 # make sure this script runs properly regardless of qwhere the user is when they call it
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+parent_path=$( cd "$(dirname "$(BASH_SOURCE[0])")" ; pwd -P )
 cd "$parent_path"
 
 #move into the app folder
