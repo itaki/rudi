@@ -29,10 +29,13 @@ if [ $LOCAL != $REMOTE ]; then
     echo "Change detected!"
     echo "Updating local files with the latest from Github"!
     git pull
-    echo "Stopping any running Docker containers"
+    echo "Stopping any containers that might be running"
     docker compose down --remove-orphans
-    echo "Building and running new container"
+    echo "Deleting any and all previous containers"
+    docker system prune
+    echo "Building and running a brand new container"
     docker compose up --build -d
+    echo "Polling for changes..."
 
 fi
 sleep 5
