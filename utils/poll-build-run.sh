@@ -13,6 +13,8 @@
 cd ..
 cd rudi-app
 
+echo Polling for changes...
+
 while true
 do
 
