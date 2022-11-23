@@ -32,7 +32,7 @@ if [ $LOCAL != $REMOTE ]; then
     echo "Stopping any containers that might be running"
     docker compose down --remove-orphans
     echo "Deleting any and all previous containers"
-    docker system prune
+    docker system prune -f
     echo "Building and running a brand new container"
     docker compose up --build -d
     echo "Polling for changes..."
