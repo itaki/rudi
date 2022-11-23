@@ -81,3 +81,23 @@ The log level is set in the docker-compose.yml file and is injected as an enviro
 The easiest way set this quickly is to add to the command line before you run the app
 
     LOG_LEVEL=DEBUG python3 main.py
+
+---
+
+## Pi Deployment
+
+### poll-build-run.py
+
+This utility is meant to be run on a Pi when you want it to automatically run the latest code from a certain branch.
+
+Pi Pre-Reqs:
+- Internet access
+- git installed
+- Docker installed
+
+Usage:
+- Connect to Pi (physically or via SSH)
+- Clone repo (you only have to do this step once)
+- Checkout the branch you want to monitor (git checkout some-branch)
+- Make sure you have a valid config file (you may also want to make sure mock pins are disabled)
+- Run the utility (sh utils/poll-build-run.py)
