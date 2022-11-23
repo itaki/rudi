@@ -27,7 +27,7 @@ if [ $LOCAL != $REMOTE ]; then
 
     echo Change Detected!
 
-    # git pull origin $BRANCH;
+    git pull origin $BRANCH;
 
 fi
 sleep 5
