@@ -11,23 +11,23 @@ from gpiozero import Device, Button, LED
 class SimpleButton(RudiDevice):
 
     def on_init(self):
+        #register my valid events in case anyone asks what I can do
         self.register_event("PRESSED")
 
-        # add code here to setup hardware connection
-        # GPIO.whatever(self.config.connection.whatever)
+        #setup a gpiozero button on my designated pin
+        button = Button(self.config['connection']['address']['pin'])
 
-        # Device.pin_factory = MockFactory()
-
-        led = LED(17)
-        button = Button(3)
-
-        # button.when_pressed = led.on
-        # button.when_released = led.off
-
-        # when button press is detected, do this:
-        # self.emit_event("PRESSED", {})
+        #point to a function when button is pressed
+        #note: this just points to a function, 
+        button.when_pressed = self.on_press
+        
 
         self.emit_event("READY", {})
+    
+    def on_press(self): 
+        self.emit_event("PRESSED", {})
+
+
 
 
 class LedLight(RudiDevice):
