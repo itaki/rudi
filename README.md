@@ -1,6 +1,6 @@
 # RUDI
 
-Automating your home or workshop using a Raspberry Pi.......
+Automating your home or workshop using a Raspberry Pi........
 
 ---
 
