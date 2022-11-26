@@ -23,7 +23,7 @@
         {
             "label" : "Miter Saw Light",
             "id" : "miter-saw-light",
-            "type" : "LedLight",
+            "type" : "SimpleLedLight",
             "physical_location" : "light attached to pi",
             "connection" : {
                 "bus" : "GPIO",
