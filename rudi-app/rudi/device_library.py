@@ -77,6 +77,32 @@ class LedLight(RudiDevice):
 
 
 
+class SimpleLedLight(RudiDevice):
+
+    # I am a STATELESS LED light device - I always does the last thing asked of me
+    # I am not very practical for real world applications
+
+    def on_init(self):
+        self.register_event("TURNED_ON")
+        self.register_event("TURNED_OFF")
+
+        self.register_action("TURN_ON", self.turn_on_light)
+        self.register_action("TURN_OFF", self.turn_off_light)
+
+        self.light = LED(self.config['connection']['address']['pin'])
+
+        self.emit_event("READY", {})
+    
+    def turn_on_light(self, args) :
+        self.light.on()
+        self.emit_event("TURNED_ON", {})
+    
+    def turn_off_light(self, args) :
+        self.light.off()
+        self.emit_event("TURNED_ON", {})
+        
+
+
 class VoltageDetector(RudiDevice):
     
     # needs more work
