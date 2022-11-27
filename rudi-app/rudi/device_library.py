@@ -43,9 +43,11 @@ class LedLight(RudiDevice):
     devices_who_are_on = []
 
     def on_init(self):
+        # tell the world what can happen to me
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
 
+        # tell the world what I can do
         self.register_action("TURN_ON", self.turn_on_light)
         self.register_action("TURN_OFF_SOFT", self.turn_off_light_soft)
         self.register_action("TURN_OFF_HARD", self.turn_off_light_hard)
