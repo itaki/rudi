@@ -3,7 +3,8 @@
         { "name" : "Mike's light and button shop" }
     ],
     "hardware" : {
-        "use_mock_pins" : true 
+        "use_mock_pins" : true,
+        "reset_gpio_at_startup" : true
     },
     "devices" : [
         {
