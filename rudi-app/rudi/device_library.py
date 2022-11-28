@@ -37,10 +37,10 @@ class LedLight(RudiDevice):
 
     light_is_on = False
 
-    auto_turn_enable = True
+    auto_turn_enable = True # This means it can turn off automaticaly?
     auto_turn_off_duration = 300
     
-    devices_who_are_on = []
+    devices_who_are_on = [] #Does this thing keep a list of all the devices that are on in the whole shop?
 
     def on_init(self):
         # tell the world what can happen to me
