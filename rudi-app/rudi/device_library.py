@@ -15,8 +15,8 @@ class SimpleButton(RudiDevice):
         self.register_event("PRESSED")
 
         #setup a gpiozero button on my designated pin
-        button = Button(self.config['connection']['address']['pin'])
-
+        #button = Button(self.config['connection']['address']['pin'])
+        button = Button(20)
         #point to a function when button is pressed
         #note: this just points to a function, 
         button.when_pressed = self.on_press
@@ -47,6 +47,7 @@ class LedLight(RudiDevice):
         self.register_action("TURN_ON", self.turn_on_light)
         self.register_action("TURN_OFF_SOFT", self.turn_off_light_soft)
         self.register_action("TURN_OFF_HARD", self.turn_off_light_hard)
+        self.register_action("TOGGLE", self.toggle)
 
         # add code to override auto turnoff defualt values if found in preferences
 
@@ -61,9 +62,11 @@ class LedLight(RudiDevice):
 
         self.emit_event("READY", {})
     
-    def turn_on_light(self, args) :
+    def turn_on_light(self) :
         # do GPIO stuff to turn on light
+        logging.debug(f"turning ON {self.config['label']}")
         self.light_is_on = True
+        self.light.on()
         self.emit_event("TURNED_ON", {})
     
     def turn_off_light_soft(self) :
@@ -73,8 +76,18 @@ class LedLight(RudiDevice):
 
     def turn_off_light_hard(self) :
         # do GPIO stuff to turn off light
+        logging.debug(f"turning OFF {self.config['label']}")
         self.light_is_on = False
+        self.light.on()
         self.emit_event("TURNED_OFF", {})
+    
+    def toggle(self, args):
+        # check my status and do the opposites
+        if self.light_is_on == False:
+            self.turn_on_light()
+        else:
+            self.turn_off_light_hard()
+
 
 class SuperSimpleLedLight(RudiDevice):
 
@@ -82,23 +95,39 @@ class SuperSimpleLedLight(RudiDevice):
     # I am not very practical for real world applications
 
     def on_init(self):
+        self.light_is_on = False
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
 
         self.register_action("TURN_ON", self.turn_on_light)
         self.register_action("TURN_OFF", self.turn_off_light)
+        self.register_action("TOGGLE", self.toggle)
 
         self.light = LED(self.config['connection']['address']['pin'])
 
         self.emit_event("READY", {})
     
-    def turn_on_light(self, args) :
+    def turn_on_light(self) :
+        logging.debug(f"Turning ON {self.config['label']}")
         self.light.on()
+        self.light_is_on = True
         self.emit_event("TURNED_ON", {})
+        return True
     
-    def turn_off_light(self, args) :
+    def turn_off_light(self) :
+        logging.debug(f"Turning OFF {self.config['label']}")
         self.light.off()
+        self.light_is_on = False
         self.emit_event("TURNED_OFF", {})
+        return True
+
+    def toggle(self, args) :
+        # check my status and do the opposites
+        if self.light_is_on == False:         
+            self.turn_on_light()
+        else:
+            self.turn_off_light()
+
 
 class VoltageDetector(RudiDevice):
     
