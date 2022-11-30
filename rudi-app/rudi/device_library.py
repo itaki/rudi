@@ -91,13 +91,17 @@ class SuperSimpleLedLight(RudiDevice):
 
         self.emit_event("READY", {})
     
+    def on_shutdown(self, details):
+        logging.debug(self.config['id'] + " is shutting down...")
+        self.turn_off_light({})
+    
     def turn_on_light(self, args) :
         self.light.on()
         self.emit_event("TURNED_ON", {})
     
     def turn_off_light(self, args) :
         self.light.off()
-        self.emit_event("TURNED_ON", {})
+        self.emit_event("TURNED_OFF", {})
 
 class VoltageDetector(RudiDevice):
     
