@@ -50,10 +50,18 @@ class Device():
         #loop thru the provided config and subscribe to specified events
         for sub in self.config['subscriptions']:
             shop.em.subscribe(sub['listen_to'], sub['listen_for'], self.actions[sub['do_this']])
+
+        shop.em.subscribe("shop", "SHUTDOWN", self.on_shutdown)
     
     def on_init(self):
         # a safe place for subclasses to add init code without needed to override init
         self.emit_event("READY", {})
+        return True
+    
+    def on_shutdown(self, details):
+        # this is called when the shop shuts down
+        # devices are welcome to override this function and add custom logic
+        logging.debug(self.config['id'] + " is shutting down...")
         return True
 
     def register_event(self, event):
