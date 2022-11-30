@@ -2,3 +2,4 @@ adafruit-circuitpython-servokit
 gpiozero
 pymitter
 websockets
+RPi.GPIO
