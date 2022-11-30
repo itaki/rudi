@@ -4,7 +4,7 @@ import json
 from rudi import shop as shop
 
 # set logging level
-LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
 logging.basicConfig(level=LOG_LEVEL)
 
 # load config
@@ -21,7 +21,7 @@ logging.debug("Simulating left-miter-saw-button being pressed 2")
 shop.em.emit('left-miter-saw-button', 'PRESSED', {})
 
 
-print("thisi is test")
+print("this is test")
 
 
 while True:
