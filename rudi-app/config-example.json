@@ -3,7 +3,7 @@
         { "name" : "Mike's light and button shop" }
     ],
     "hardware" : {
-        "use_mock_pins" : true 
+        "use_mock_pins" : false 
     },
     "devices" : [
         {
@@ -14,7 +14,7 @@
             "connection" : {
                 "bus" : "GPIO",
                 "address" : { 
-                    "pin" : 22
+                    "pin" : 20
                 }
             },
             "preferences" : {},
@@ -23,7 +23,7 @@
         {
             "label" : "Miter Saw Light",
             "id" : "miter-saw-light",
-            "type" : "LedLight",
+            "type" : "SuperSimpleLedLight",
             "physical_location" : "light attached to pi",
             "connection" : {
                 "bus" : "GPIO",
@@ -39,7 +39,7 @@
                 {
                     "listen_to" : "left-miter-saw-button",
                     "listen_for" : "PRESSED",
-                    "do_this" : "TURN_ON"
+                    "do_this" : "TOGGLE"
                 }
             ]
         }
