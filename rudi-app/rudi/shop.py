@@ -35,6 +35,7 @@ class Shop():
     
     def set_pin_mode(self):
         if self.config['hardware']['use_mock_pins']:
+            logging.warning("!!! Using mock pins !!!")
             Device.pin_factory = MockFactory()
         return True
 
