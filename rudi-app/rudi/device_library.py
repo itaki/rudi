@@ -25,7 +25,7 @@ class SimpleButton(RudiDevice):
         self.emit_event("READY", {})
     
     def on_press(self): 
-        print("button has been pressed")
+        logging.debug(f"{self['lable']} at {self['connection']['bus']} {self['connection']['address']['pin']} has been pressed")
         self.emit_event("PRESSED", {})
 
 
@@ -78,7 +78,7 @@ class LedLight(RudiDevice):
 
 class SuperSimpleLedLight(RudiDevice):
 
-    # I am a STATELESS LED light device - I always does the last thing asked of me
+    # I am a STATELESS LED light device - I always do the last thing asked of me
     # I am not very practical for real world applications
 
     def on_init(self):
@@ -98,7 +98,7 @@ class SuperSimpleLedLight(RudiDevice):
     
     def turn_off_light(self, args) :
         self.light.off()
-        self.emit_event("TURNED_ON", {})
+        self.emit_event("TURNED_OFF", {})
 
 class VoltageDetector(RudiDevice):
     
