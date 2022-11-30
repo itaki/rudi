@@ -21,7 +21,7 @@ logging.debug("Simulating left-miter-saw-button being pressed 2")
 shop.em.emit('left-miter-saw-button', 'PRESSED', {})
 
 
-
+print("thisi is test")
 
 
 while True:
