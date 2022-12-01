@@ -14,19 +14,15 @@ class SimpleButton(RudiDevice):
         #register my valid events in case anyone asks what I can do
         self.register_event("PRESSED")
 
-        #setup a gpiozero button on my designated pin
-        #button = Button(self.config['connection']['address']['pin'])
-        button = Button(20)
-        #point to a function when button is pressed
-        #note: this just points to a function, 
-        button.when_pressed = self.on_press
-        
+        Button.self = ''
+        button = Button(self.config['connection']['address']['pin'])
+        button.self = self
+        button.when_pressed = self.on_press.__func__
 
         self.emit_event("READY", {})
-    
-    def on_press(self): 
-        logging.debug(f"{self['lable']} at {self['connection']['bus']} {self['connection']['address']['pin']} has been pressed")
-        self.emit_event("PRESSED", {})
+
+    def on_press(btn): 
+        btn.self.emit_event("PRESSED", {})
 
 
 
