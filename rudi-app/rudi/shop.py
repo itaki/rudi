@@ -20,8 +20,8 @@ class Shop():
         self.load_config(shop_config)
         logging.info("Shop started!")
 
-        print("\n" + "Welcome to " + self.get_shop_name())
-        print("===================================" + "\n")
+        print(f"\nWelcome to {self.get_shop_name()}")
+        print("===================================\n")
 
     def load_config(self, data):    
         self.config = data
