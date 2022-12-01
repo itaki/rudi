@@ -30,7 +30,7 @@ def DeviceFactory(device):
 
     classmap = {
         'SimpleButton': SimpleButton,
-        'LedLight': LedLight,
+        'Led': Led,
         'SuperSimpleLedLight': SuperSimpleLedLight
     }
     return classmap[device["type"]](device)
