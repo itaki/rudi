@@ -25,7 +25,6 @@ class SimpleButton(RudiDevice):
         self.emit_event("READY", {})
     
     def on_press(self): 
-        print("button has been pressed")
         self.emit_event("PRESSED", {})
 
 
