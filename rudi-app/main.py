@@ -1,4 +1,6 @@
 import os
+import subprocess
+import sys
 import logging
 import json
 from rudi import shop as shop
@@ -6,6 +8,13 @@ from rudi import shop as shop
 # set logging level
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
 logging.basicConfig(level=LOG_LEVEL)
+
+
+# only install RPi.GPIO if system is not a Mac
+if not "Darwin" in os.uname():
+    logging.debug("Installing RPi.GPIO")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "RPi.GPIO"])
+
 
 # load config
 with open('config.json') as json_file:
