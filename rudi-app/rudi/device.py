@@ -8,7 +8,7 @@ class DeviceManager():
     devices = {}
 
     def add_device(self, device):
-        logging.debug("Adding device: " + device['id'])
+        logging.debug(f"Adding device: {device['id']} on {device['connection']}")
         self.devices[device["id"]] = DeviceFactory(device)
 
     def add_devices_from_config(self, devices):
@@ -58,12 +58,12 @@ class Device():
 
     def register_event(self, event):
         # registers an event that this device class can emit
-        logging.debug("Registering action: " + self.config['id'] + "." + event)
+        logging.debug(f"Registering action: {self.config['id']}.{event}")
         self.events.append(event)
     
     def register_action(self, action, handler):
         # registers an action that this device class can do and provides name of handler function
-        logging.debug("Registering action: " + self.config['id'] + "." + action)
+        logging.debug(f"Registering action: {self.config['id']}.{action}")
         self.actions[action] = handler
     
     def emit_event(self, event, payload) :
