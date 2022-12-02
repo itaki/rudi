@@ -48,9 +48,11 @@ Waiting for a Docker image to build every time you make a small change is annoyi
 
         python3 main.py
 
-3. Make sure you add any new packages you use to the requirements.txt file
+4. Make sure you add any new packages you use to the requirements.txt file
 
-4. Before you commit your completed work, be sure to run the RUDI App in Docker at least once to insure it will work properly in the wild
+5. Before you commit your completed work, be sure to run the RUDI App in Docker at least once to insure it will work properly in the wild
+
+Note: If you are installing these dependencies anywhere other than a Pi you may have to remove the RPi.GPIO library, as it will not even install on certain systems (like Mac OS). You can just take this out of the file and then put it back after the installation.
 
 ### RUDI Admin
 
