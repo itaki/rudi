@@ -2,11 +2,44 @@ import logging
 from rudi.device import Device as RudiDevice
 from . import shop
 from gpiozero import Device, Button, LED
+from sshkeyboard import listen_keyboard
 from threading import Timer
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
 
+
+class KeyboardButton(RudiDevice):
+    
+    thread = None
+    keys_to_sources = {}
+
+    def on_init(self):
+        
+        # declare events that I might emit  
+        self.register_event("KEY_PRESSED")
+
+        # store the requested key along with the current instance id
+        KeyboardButton.keys_to_sources.update( { self.config['preferences']['keyboard_key'] : self.config['id'] } )
+
+        # start keyboard listener on new thread
+        def on_press(key):
+            KeyboardButton.handle_on_press(key)
+        def start_listener():
+            listen_keyboard(on_press=on_press)
+        if (KeyboardButton.thread == None):
+            logging.debug("starting new thread for keyboard listener")
+            KeyboardButton.thread = threading.Thread(target=start_listener)
+            KeyboardButton.thread.start()
+
+        self.emit_event("READY", {})
+    
+    @staticmethod
+    def handle_on_press(pressed_key):
+        logging.debug("Handling key " + pressed_key)
+        for key, source in KeyboardButton.keys_to_sources.items(): 
+            if key == pressed_key:
+                shop.em.emit(source, "KEY_PRESSED", {'pressed_key': pressed_key})
 
 class SimpleButton(RudiDevice):
 
@@ -136,7 +169,7 @@ class Led(RudiDevice):
 
     def delayed_off(self) :
         logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
-        self.timer = Timer (self.turn_off_delay, self.turn_off) 
+        self.timer = threading.Timer (self.turn_off_delay, self.turn_off) 
         self.timer.start()
     
     def delayed_blink_off(self) :
@@ -170,19 +203,15 @@ class SuperSimpleLedLight(RudiDevice):
 
         self.emit_event("READY", {})
     
-    def turn_on_light(self) :
-        logging.debug(f"Turning ON {self.config['label']}")
+    def turn_on_light(self, event) :
         self.light.on()
         self.light_is_on = True
         self.emit_event("TURNED_ON", {})
         return True
     
-    def turn_off_light(self) :
-        logging.debug(f"Turning OFF {self.config['label']}")
+    def turn_off_light(self, event) :
         self.light.off()
-        self.light_is_on = False
         self.emit_event("TURNED_OFF", {})
-        return True
 
 class VoltageDetector(RudiDevice):
     

@@ -13,7 +13,7 @@ class EventManager():
     def subscribe(self, listen_to, listen_for, callback):
 
         global_event = listen_to + "." + listen_for
-        logging.debug("Event Subscription Created: for " + global_event)
+        logging.debug(f"Event subscription created: for {global_event}")
         self.ee.on(global_event, callback)
         
 
@@ -22,7 +22,7 @@ class EventManager():
     def emit(self, source, event, payload):
 
         global_event = source + "." + event
-        logging.debug("Event Emitted: " + global_event)
+        logging.debug(f"Event emitted: {global_event}")
         self.ee.emit(global_event, payload)
         
 

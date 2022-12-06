@@ -20,8 +20,8 @@ class Shop():
         self.load_config(shop_config)
         logging.info("Shop started!")
 
-        print("\n" + "Welcome to " + self.get_shop_name())
-        print("===================================" + "\n")
+        print(f"\nWelcome to {self.get_shop_name()}")
+        print("===================================\n")
 
     def load_config(self, data):    
         self.config = data
@@ -35,7 +35,7 @@ class Shop():
     
     def set_pin_mode(self):
         if self.config['hardware']['use_mock_pins']:
-            logging.warning("Using mock pins!")
+            logging.warning("USING MOCK PINS!")
             Device.pin_factory = MockFactory()
         return True
 
