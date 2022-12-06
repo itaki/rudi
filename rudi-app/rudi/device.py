@@ -32,7 +32,8 @@ def DeviceFactory(device):
         'SimpleButton': SimpleButton,
         'LedLight': LedLight,
         'SuperSimpleLedLight': SuperSimpleLedLight,
-        'KeyboardButton' : KeyboardButton
+        'KeyboardButton' : KeyboardButton,
+        'Relay' : Relay
     }
     return classmap[device["type"]](device)
 
