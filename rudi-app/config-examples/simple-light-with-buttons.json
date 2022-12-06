@@ -1,0 +1,124 @@
+{
+    "info" : [
+        { "name" : "Mike's light and button shop" }
+    ],
+    "hardware" : {
+        "use_mock_pins" : false 
+    },
+    "devices" : [
+        {
+            "label" : "Button 1",
+            "id" : "button-1",
+            "type" : "SimpleButton",
+            "physical_location" : "top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 20
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 2",
+            "id" : "button-2",
+            "type" : "SimpleButton",
+            "physical_location" : "second from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 23
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 3",
+            "id" : "button-3",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 24
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 4",
+            "id" : "button-4",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 25
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 5",
+            "id" : "button-5",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 26
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Miter Saw Light",
+            "id" : "miter-saw-light",
+            "type" : "Led",
+            "physical_location" : "light attached to pi",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 21
+                }
+            },
+            "preferences" : {
+                "turn_off_delay" : 3,
+                "delay_style" : "BLINK",
+                "blink_time" : ".5"
+            },
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "BLINK"
+                },
+                {
+                    "listen_to" : "button-2",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TOGGLE"
+                },
+                {
+                    "listen_to" : "button-3",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "button-4",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "DELAYED_OFF"
+                },
+                {
+                    "listen_to" : "button-5",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "DELAYED_BLINK_OFF"
+                }
+            ]
+        }
+    ]
+}
