@@ -3,7 +3,7 @@ from rudi.device import Device as RudiDevice
 from . import shop
 from gpiozero import Device, Button, LED
 from sshkeyboard import listen_keyboard
-from threading import Timer
+import threading
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
