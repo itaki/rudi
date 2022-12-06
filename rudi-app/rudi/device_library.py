@@ -68,7 +68,7 @@ class Led(RudiDevice):
         "preferences" : {
                 "turn_off_delay" : 10,
                 "delay_style" : "BLINK"
-                "blink
+                "blink_time" : ".5"
             },
         delay is in seconds
         style options are "BLINK" and "SOLID" but if left blank defaults to "SOLID"'''
