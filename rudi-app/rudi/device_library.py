@@ -1,9 +1,9 @@
 import logging
-from pynput import keyboard
 from rudi.device import Device as RudiDevice
 from . import shop
 from gpiozero import Device, Button, LED
-
+import threading
+from sshkeyboard import listen_keyboard
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
@@ -11,7 +11,7 @@ from gpiozero import Device, Button, LED
 
 class KeyboardButton(RudiDevice):
     
-    listener = None
+    thread = None
     keys_to_sources = {}
 
     def on_init(self):
@@ -22,25 +22,24 @@ class KeyboardButton(RudiDevice):
         # store the requested key along with the current instance id
         KeyboardButton.keys_to_sources.update( { self.config['preferences']['keyboard_key'] : self.config['id'] } )
 
-        # listen for all key presses
+        # start keyboard listener on new thread
         def on_press(key):
             KeyboardButton.handle_on_press(key)
-        if (KeyboardButton.listener == None):
-            KeyboardButton.listener = keyboard.Listener(on_press=on_press)
-            KeyboardButton.listener.start()  # start to listen on a separate thread
+        def start_listener():
+            listen_keyboard(on_press=on_press)
+        if (KeyboardButton.thread == None):
+            logging.debug("starting new thread for keyboard listener")
+            KeyboardButton.thread = threading.Thread(target=start_listener)
+            KeyboardButton.thread.start()
 
         self.emit_event("READY", {})
     
     @staticmethod
     def handle_on_press(pressed_key):
-        try:
-            pk = pressed_key.char  # single-char keys
-        except:
-            pk = pressed_key.name  # other keys
-        logging.debug("Handling key " + pk)
+        logging.debug("Handling key " + pressed_key)
         for key, source in KeyboardButton.keys_to_sources.items(): 
-            if key == pk:
-                shop.em.emit(source, "KEY_PRESSED", {'key_pressed': pk})
+            if key == pressed_key:
+                shop.em.emit(source, "KEY_PRESSED", {'pressed_key': pressed_key})
 
 class SimpleButton(RudiDevice):
 
