@@ -1,5 +1,7 @@
 adafruit-circuitpython-servokit
 gpiozero
 pymitter
-websockets
+pynput
 RPi.GPIO
+sshkeyboard
+websockets

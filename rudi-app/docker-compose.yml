@@ -1,6 +1,8 @@
 services:
   rudi-app:
     privileged: true
+    stdin_open: true
+    tty: true
     build:
       context: .
     environment:

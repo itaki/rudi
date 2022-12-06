@@ -1,0 +1,53 @@
+{
+    "info" : [
+        { "name" : "Keyboard Buttons and Simple Little Red LED" }
+    ],
+    "hardware" : {
+        "use_mock_pins" : true 
+    },
+    "devices" : [
+        {
+            "label" : "Keyboard Button L",
+            "id" : "keyboard-button-l",
+            "type" : "KeyboardButton",
+            "physical_location" : "The 'l' key on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {"keyboard_key" : "l"},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Keyboard Button P",
+            "id" : "keyboard-button-p",
+            "type" : "KeyboardButton",
+            "physical_location" : "The 'p' key on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {"keyboard_key" : "p"},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Little Red LED",
+            "id" : "little-red-led",
+            "type" : "SuperSimpleLedLight",
+            "physical_location" : "A little baby red LED attached to pi",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 21
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : [
+                {
+                    "listen_to" : "keyboard-button-l",
+                    "listen_for" : "KEY_PRESSED",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "keyboard-button-p",
+                    "listen_for" : "KEY_PRESSED",
+                    "do_this" : "TURN_OFF"
+                }
+            ]
+        }
+    ]
+}
