@@ -2,11 +2,44 @@ import logging
 from rudi.device import Device as RudiDevice
 from . import shop
 from gpiozero import Device, Button, LED
-
+import threading
+from sshkeyboard import listen_keyboard
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
 
+
+class KeyboardButton(RudiDevice):
+    
+    thread = None
+    keys_to_sources = {}
+
+    def on_init(self):
+        
+        # declare events that I might emit  
+        self.register_event("KEY_PRESSED")
+
+        # store the requested key along with the current instance id
+        KeyboardButton.keys_to_sources.update( { self.config['preferences']['keyboard_key'] : self.config['id'] } )
+
+        # start keyboard listener on new thread
+        def on_press(key):
+            KeyboardButton.handle_on_press(key)
+        def start_listener():
+            listen_keyboard(on_press=on_press)
+        if (KeyboardButton.thread == None):
+            logging.debug("starting new thread for keyboard listener")
+            KeyboardButton.thread = threading.Thread(target=start_listener)
+            KeyboardButton.thread.start()
+
+        self.emit_event("READY", {})
+    
+    @staticmethod
+    def handle_on_press(pressed_key):
+        logging.debug("Handling key " + pressed_key)
+        for key, source in KeyboardButton.keys_to_sources.items(): 
+            if key == pressed_key:
+                shop.em.emit(source, "KEY_PRESSED", {'pressed_key': pressed_key})
 
 class SimpleButton(RudiDevice):
 
@@ -26,9 +59,6 @@ class SimpleButton(RudiDevice):
     
     def on_press(self): 
         self.emit_event("PRESSED", {})
-
-
-
 
 class LedLight(RudiDevice):
 
@@ -77,7 +107,7 @@ class LedLight(RudiDevice):
 
 class SuperSimpleLedLight(RudiDevice):
 
-    # I am a STATELESS LED light device - I always does the last thing asked of me
+    # I am a STATELESS LED light device - I always do the last thing asked of me
     # I am not very practical for real world applications
 
     def on_init(self):
@@ -91,13 +121,13 @@ class SuperSimpleLedLight(RudiDevice):
 
         self.emit_event("READY", {})
     
-    def turn_on_light(self, args) :
+    def turn_on_light(self, event) :
         self.light.on()
         self.emit_event("TURNED_ON", {})
     
-    def turn_off_light(self, args) :
+    def turn_off_light(self, event) :
         self.light.off()
-        self.emit_event("TURNED_ON", {})
+        self.emit_event("TURNED_OFF", {})
 
 class VoltageDetector(RudiDevice):
     

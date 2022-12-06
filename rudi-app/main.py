@@ -15,8 +15,8 @@ with open('config.json') as json_file:
 shop1 = shop.Shop(config)
 
 
-logging.debug("Simulating left-miter-saw-button being pressed")
-shop.em.emit('left-miter-saw-button', 'PRESSED', {})
+# logging.debug("Simulating left-miter-saw-button being pressed")
+# shop.em.emit('left-miter-saw-button', 'PRESSED', {})
 
 
 while True:
