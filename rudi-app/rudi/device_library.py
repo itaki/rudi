@@ -77,7 +77,7 @@ class Led(RudiDevice):
         #register events that I can broadcast to the world
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
-        self.register_event("BLINKING")
+        self.register_event("BLINKING_STARTED")
 
         #register actions that I can do
         self.register_action("TURN_ON", self.handle_turn_on_action)
@@ -132,7 +132,7 @@ class Led(RudiDevice):
     #all my methods
     def turn_on(self) :
         #kill the timer if there is one
-        self.kill_timer
+        self.kill_timer()
         logging.debug(f"TURNING ON {self.config['label']}")
         self.light.on()
         self.emit_event("TURNED_ON", {})
@@ -143,11 +143,10 @@ class Led(RudiDevice):
             self.force_off()
         else:
             #remove device that last requested to be off from the list of devices_who_want_me_on
-            logging.info(f"something asked me to be off but something else is still on so I'm not going off yet")
+            logging.info(f"(Add device var here) sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
     
     def force_off(self) :
         #kill the timer if there is one
-        self.kill_timer
         logging.debug(f"TURNING OFF {self.config['label']}")
         self.light.off()
         self.emit_event("TURNED_OFF", {})
@@ -162,17 +161,19 @@ class Led(RudiDevice):
 
     def blink(self):
         #kill the timer if there is one
-        self.kill_timer
+        self.kill_timer()
         logging.debug(f"BLINKING {self.config['label']}")
         self.light.blink(self.blink_time, self.blink_time, None, True)
         self.emit_event("BLINKING", {})
 
     def delayed_off(self) :
+        self.kill_timer()
         logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
         self.timer = threading.Timer (self.turn_off_delay, self.turn_off) 
         self.timer.start()
     
     def delayed_blink_off(self) :
+        self.kill_timer()
         #first start blinking
         self.blink()
         #then set the timer
@@ -182,7 +183,9 @@ class Led(RudiDevice):
         #just kills the timer if it's running
         try:
             self.timer.cancel()
+            logging.debug(f"Found and CANCELLED timer on {self.config['label']} ")
         except:
+            logging.debug(f"No timer found on {self.config['label']}. PROCEEDING")
             pass
 
 
@@ -192,7 +195,6 @@ class SuperSimpleLedLight(RudiDevice):
     # I am not very practical for real world applications
 
     def on_init(self):
-        self.light_is_on = False
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
 
@@ -205,9 +207,7 @@ class SuperSimpleLedLight(RudiDevice):
     
     def turn_on_light(self, event) :
         self.light.on()
-        self.light_is_on = True
         self.emit_event("TURNED_ON", {})
-        return True
     
     def turn_off_light(self, event) :
         self.light.off()
