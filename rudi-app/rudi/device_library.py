@@ -133,27 +133,26 @@ class Gpio_Shop_Light(RudiDevice):
     def handle_toggle_action(self, payload) :
         self.toggle(payload)
     def handle_force_off_action(self, payload) :
-        self.force_off(payload)
+        self.force_off()
 
     #all my methods
     def turn_on(self, payload) :
         if payload['source'] not in self.devices_who_want_me_on:
             self.devices_who_want_me_on.append(payload['source'])
-        if self.state != "ON" :
+        if self.state == "SHUTTING_DOWN" :
             self.kill_shutdown_timer()
+        if self.state != "ON" :
             logging.debug(f"TURNING ON {self.config['label']}")
             self.light.on()
             self.state = "ON"
             self.emit_event("TURNED_ON", {})
     
     def turn_off(self, payload) :
-        logging.debug(f"payload['source'] is {payload['source']}")
-        logging.debug(f"devices_who_want_me_on {self.devices_who_want_me_on}")
         if payload['source'] in self.devices_who_want_me_on : # off requests are only valid if the requesting device is in this list
             self.devices_who_want_me_on.remove(payload['source'])
             if self.state == "ON" :
                 if len(self.devices_who_want_me_on) > 0 : #check to see if any other devices want me on
-                   logging.debug(f"{payload['source']} sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
+                   logging.debug(f"{self.config['id']} received a turn off request from {payload['source']} and removed {payload['source']} from the 'devices_who_want_me_on' list but {self.config['id']} will stay on for: {self.devices_who_want_me_on}")
                 else:            
                     if self.turn_off_delay > 0 :
                         if self.delay_style == "BLINK" :
@@ -164,7 +163,7 @@ class Gpio_Shop_Light(RudiDevice):
                         self.state = "SHUTTING_DOWN"
        
                     else :
-                        self.force_off(payload)
+                        self.force_off()
     
     def force_off(self) :
         if self.state == "SHUTTING_DOWN" :
