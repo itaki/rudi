@@ -9,37 +9,53 @@ import threading
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
 
 
-class KeyboardButton(RudiDevice):
+class Keyboard(RudiDevice):
     
     thread = None
-    keys_to_sources = {}
+    key_map = {}
 
     def on_init(self):
-        
-        # declare events that I might emit  
+
+        # register my valid events in case anyone asks what I can do
+        # note: we do not register the dynamic events defined in the preferences
         self.register_event("KEY_PRESSED")
 
-        # store the requested key along with the current instance id
-        KeyboardButton.keys_to_sources.update( { self.config['preferences']['keyboard_key'] : self.config['id'] } )
+        # create a mapping of keys to instance id b/c python callback with threading gets weird
+        for mapping in self.config['preferences']["mappings"] :
+            if mapping['keyboard_key'] in Keyboard.key_map :
+                logging.warn(f"Ignoring { self.config['id'] }'s request to map { mapping['keyboard_key'] } to { mapping['event_name'] } because that key was already mapped by { Keyboard.key_map[mapping['keyboard_key']]['source_instance'] } to { Keyboard.key_map[mapping['keyboard_key']]['event_name'] }")
+            else :
+                key_meta = {}
+                key_meta['event_name'] = mapping['event_name']
+                key_meta['source_instance'] = self.config['id']  # we need to store the current instance id b/c 'self' can't be trusted past this point
+                Keyboard.key_map.update({
+                    mapping['keyboard_key'] : key_meta
+                })
 
         # start keyboard listener on new thread
         def on_press(key):
-            KeyboardButton.handle_on_press(key)
+            Keyboard.handle_on_press(key)
         def start_listener():
             listen_keyboard(on_press=on_press)
-        if (KeyboardButton.thread == None):
+        if (Keyboard.thread == None):
             logging.debug("starting new thread for keyboard listener")
-            KeyboardButton.thread = threading.Thread(target=start_listener)
-            KeyboardButton.thread.start()
+            Keyboard.thread = threading.Thread(target=start_listener)
+            Keyboard.thread.start()
 
         self.emit_event("READY", {})
     
     @staticmethod
     def handle_on_press(pressed_key):
         logging.debug("Handling key " + pressed_key)
-        for key, source in KeyboardButton.keys_to_sources.items(): 
-            if key == pressed_key:
-                shop.em.emit(source, "KEY_PRESSED", {'pressed_key': pressed_key})
+        if pressed_key in Keyboard.key_map :
+        #for key, meta in Keyboard.key_map.items(): 
+            #if key == pressed_key:
+            # we can't use 'self' here to get the source so we use the instance value we stored earlier
+            shop.em.emit(
+                Keyboard.key_map[pressed_key]['source_instance'],
+                Keyboard.key_map[pressed_key]['event_name'],
+                {'pressed_key': pressed_key}
+            )
 
 class SimpleButton(RudiDevice):
 

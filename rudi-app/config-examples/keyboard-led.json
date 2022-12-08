@@ -7,21 +7,43 @@
     },
     "devices" : [
         {
-            "label" : "Keyboard Button L",
-            "id" : "keyboard-button-l",
-            "type" : "KeyboardButton",
-            "physical_location" : "The 'l' key on a keyboard that is connected to Rudi",
+            "label" : "Fake Mitre Saw",
+            "id" : "fake-mitre-saw",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on keyboard that is connected to Rudi",
             "connection" : {},
-            "preferences" : {"keyboard_key" : "l"},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "q",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "w",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
             "subscriptions" : []
         },
         {
-            "label" : "Keyboard Button P",
-            "id" : "keyboard-button-p",
-            "type" : "KeyboardButton",
-            "physical_location" : "The 'p' key on a keyboard that is connected to Rudi",
+            "label" : "Fake Dust Collector",
+            "id" : "fake-dust-collector",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on a keyboard that is connected to Rudi",
             "connection" : {},
-            "preferences" : {"keyboard_key" : "p"},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "a",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "s",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
             "subscriptions" : []
         },
         {
@@ -38,15 +60,26 @@
             "preferences" : {},
             "subscriptions" : [
                 {
-                    "listen_to" : "keyboard-button-l",
-                    "listen_for" : "KEY_PRESSED",
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_ON",
                     "do_this" : "TURN_ON"
                 },
                 {
-                    "listen_to" : "keyboard-button-p",
-                    "listen_for" : "KEY_PRESSED",
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_OFF",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_ON",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_OFF",
                     "do_this" : "TURN_OFF"
                 }
+                
             ]
         }
     ]
