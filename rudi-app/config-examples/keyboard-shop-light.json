@@ -1,0 +1,128 @@
+{
+    "info" : [
+        { "name" : "Keyboard Buttons and Shop Light" }
+    ],
+    "hardware" : {
+        "use_mock_pins" : true 
+    },
+    "devices" : [
+        {
+            "label" : "Fake Mitre Saw",
+            "id" : "fake-mitre-saw",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "q",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "w",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Fake Dust Collector",
+            "id" : "fake-dust-collector",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "a",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "s",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Fake Toggle Button",
+            "id" : "fake-toggle-button",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "z",
+                        "event_name" : "PRESSED"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Fake Force Off Button",
+            "id" : "fake-force-off-button",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "x",
+                        "event_name" : "PRESSED"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Shop Light",
+            "id" : "shop-light",
+            "type" : "Gpio_Shop_Light",
+            "physical_location" : "An LED light connected to the Pi via GPIO",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 21
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : [
+                {
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_ON",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_OFF",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_ON",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_OFF",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "fake-toggle-button",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TOGGLE"
+                },
+                {
+                    "listen_to" : "fake-force-off-button",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "FORCE_OFF"
+                }
+                
+            ]
+        }
+    ]
+}
