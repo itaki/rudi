@@ -60,18 +60,19 @@ class SimpleButton(RudiDevice):
 
 
 
-class Led(RudiDevice):
-    '''This is a simple LED which can be on, off, toggled, forced off, blink, delayed off, and blink delayed off
+class Gpio_Shop_Light(RudiDevice):
+    '''This is a simple LED which can be on, off, toggled, forced off, delayed off, and blink delayed off
 
         Default is simple on and off.
         Add preferences to config.json for options
         "preferences" : {
-                "turn_off_delay" : 10,
-                "delay_style" : "BLINK"
+                "turn_off_delay" : 3,
+                "delay_style" : "SOLID"
                 "blink_time" : ".5"
             },
         delay is in seconds
-        style options are "BLINK" and "SOLID" but if left blank defaults to "SOLID"'''
+        style options are "BLINK" and "SOLID" but if left blank defaults to "SOLID"
+    '''
 
     def on_init(self):
         #register events that I can broadcast to the world
@@ -92,20 +93,15 @@ class Led(RudiDevice):
         self.state = "OFF" # can also be ON or SHUTTING_DOWN
 
         # set preferences
-        self.turn_off_delay = 5
+        self.turn_off_delay = 3
         self.blink_time = .5
-        self.blink_during_turn_off_rejection = True
-        self.blink_during_turn_off = True
+        self.delay_style = "BLINK" # can also be BLINK
         if 'turn_off_delay' in self.config['preferences'] :
             self.turn_off_delay = self.config['preferences']['turn_off_delay']
         if 'delay_style' in self.config['preferences'] :
             self.delay_style = self.config['preferences']['delay_style']
         if 'blink_time' in self.config['preferences'] :
             self.blink_time = float(self.config['preferences']['blink_time'])
-        if 'blink_during_turn_off_rejection' in self.config['preferences'] :
-            self.blink_during_turn_off_rejection = self.config['preferences']['blink_during_turn_off_rejection']
-        if 'blink_during_turn_off' in self.config['preferences'] :
-            self.blink_during_turn_off = self.config['preferences']['blink_during_turn_off']
 
         #make a blank list to keep modifiers
         self.devices_who_want_me_on = []
@@ -125,7 +121,8 @@ class Led(RudiDevice):
 
     #all my methods
     def turn_on(self, payload) :
-        self.devices_who_want_me_on.append(payload['source'])
+        if payload['source'] not in self.devices_who_want_me_on:
+            self.devices_who_want_me_on.append(payload['source'])
         if self.state != "ON" :
             self.kill_shutdown_timer()
             logging.debug(f"TURNING ON {self.config['label']}")
@@ -140,20 +137,20 @@ class Led(RudiDevice):
             self.devices_who_want_me_on.remove(payload['source'])
             if self.state == "ON" :
                 if len(self.devices_who_want_me_on) > 0 : #check to see if any other devices want me on
-                    self.force_off({})
-                else:
-                    logging.info(f"(Add device var here) sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
+                   logging.debug(f"{payload['source']} sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
+                else:            
                     if self.turn_off_delay > 0 :
-                        if self.blink_during_turn_off :
+                        if self.delay_style == "BLINK" :
                             self.light.blink(self.blink_time, self.blink_time, None, True)
-                        self.timer = threading.Timer (self.turn_off_delay, self.force_off) 
+                        self.timer = threading.Timer(self.turn_off_delay, self.force_off) 
                         self.timer.start()
-                        self.state = "SHUTTING_DOWN"
                         logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
+                        self.state = "SHUTTING_DOWN"
+       
                     else :
-                        self.force_off({})
+                        self.force_off(payload)
     
-    def force_off(self, payload) :
+    def force_off(self) :
         if self.state == "SHUTTING_DOWN" :
             self.kill_shutdown_timer()
         if self.state != "OFF" :
@@ -166,10 +163,10 @@ class Led(RudiDevice):
     def toggle(self, payload):
         #this toggles visual state
         logging.debug(f"TOGGLING {self.config['label']}")
-        if self.state == "OFF" :
+        if self.state == "ON" and payload['source'] in self.devices_who_want_me_on:
+            self.turn_off(payload)
+        else: # if I'm off, shutting down, or a new device is requesting me to be on
             self.turn_on(payload)
-        else:
-            self.force_off(payload)
 
     def kill_shutdown_timer(self):
         #timer is only used for delaying turn off

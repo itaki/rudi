@@ -4,7 +4,7 @@ import json
 from rudi import shop as shop
 
 # set logging level
-LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
 logging.basicConfig(level=LOG_LEVEL)
 
 # load config
