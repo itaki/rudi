@@ -167,9 +167,9 @@ class Led(RudiDevice):
         #this toggles visual state
         logging.debug(f"TOGGLING {self.config['label']}")
         if self.state == "OFF" :
-            self.turn_on({})
+            self.turn_on(payload)
         else:
-            self.force_off({})
+            self.force_off(payload)
 
     def kill_shutdown_timer(self):
         #timer is only used for delaying turn off
