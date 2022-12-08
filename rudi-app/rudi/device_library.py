@@ -77,116 +77,108 @@ class Led(RudiDevice):
         #register events that I can broadcast to the world
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
-        self.register_event("BLINKING_STARTED")
+        self.register_event("BEGAN_DELAYED_TURN_OFF")
 
         #register actions that I can do
         self.register_action("TURN_ON", self.handle_turn_on_action)
         self.register_action("TURN_OFF", self.handle_turn_off_action)
         self.register_action("TOGGLE", self.handle_toggle_action)
         self.register_action("FORCE_OFF", self.handle_force_off_action)
-        self.register_action("BLINK", self.handle_blink_action)
-        self.register_action("DELAYED_OFF", self.handle_delayed_off_action)
-        self.register_action("DELAYED_BLINK_OFF", self.handle_delayed_blink_off_action)
         
+        #create GPIOZERO LED on proper pin
+        self.light = LED(self.config['connection']['address']['pin'])
+
+        # set state vars
+        self.state = "OFF" # can also be ON or SHUTTING_DOWN
+
+        # set preferences
+        self.turn_off_delay = 5
+        self.blink_time = .5
+        self.blink_during_turn_off_rejection = True
+        self.blink_during_turn_off = True
+        if 'turn_off_delay' in self.config['preferences'] :
+            self.turn_off_delay = self.config['preferences']['turn_off_delay']
+        if 'delay_style' in self.config['preferences'] :
+            self.delay_style = self.config['preferences']['delay_style']
+        if 'blink_time' in self.config['preferences'] :
+            self.blink_time = float(self.config['preferences']['blink_time'])
+        if 'blink_during_turn_off_rejection' in self.config['preferences'] :
+            self.blink_during_turn_off_rejection = self.config['preferences']['blink_during_turn_off_rejection']
+        if 'blink_during_turn_off' in self.config['preferences'] :
+            self.blink_during_turn_off = self.config['preferences']['blink_during_turn_off']
+
         #make a blank list to keep modifiers
         self.devices_who_want_me_on = []
 
-        #create me and assign me my address
-        self.light = LED(self.config['connection']['address']['pin'])
-
-        #grab all my preferences and apply them to myself
-        if 'turn_off_delay' in self.config['preferences'] :
-            self.turn_off_delay = self.config['preferences']['turn_off_delay']
-        else:
-            self.turn_off_delay = 0
-
-        if 'delay_style' in self.config['preferences'] :
-            self.delay_style = self.config['preferences']['delay_style']
-        else:
-            self.delay_style = 'SOLID'
-
-        if 'blink_time' in self.config['preferences'] :
-            self.blink_time = float(self.config['preferences']['blink_time'])
-        else:
-            self.blink_time = .5
-      
         #tell the world I'm ready aka "hello world"
         self.emit_event("READY", {})
 
     #make action handlers to spawn off functions
     def handle_turn_on_action(self, payload) :
-        self.turn_on()
+        self.turn_on(payload)
     def handle_turn_off_action(self, payload) :
-        self.turn_off()
+        self.turn_off(payload)
     def handle_toggle_action(self, payload) :
-        self.toggle()
+        self.toggle(payload)
     def handle_force_off_action(self, payload) :
-        self.force_off()
-    def handle_blink_action(self, payload) :
-        self.blink()
-    def handle_delayed_off_action(self, payload) :
-        self.delayed_off()
-    def handle_delayed_blink_off_action(self, payload) :
-        self.delayed_blink_off()
+        self.force_off(payload)
 
     #all my methods
-    def turn_on(self) :
-        #kill the timer if there is one
-        self.kill_timer()
-        logging.debug(f"TURNING ON {self.config['label']}")
-        self.light.on()
-        self.emit_event("TURNED_ON", {})
+    def turn_on(self, payload) :
+        self.devices_who_want_me_on.append(payload['source'])
+        if self.state != "ON" :
+            self.kill_shutdown_timer()
+            logging.debug(f"TURNING ON {self.config['label']}")
+            self.light.on()
+            self.state = "ON"
+            self.emit_event("TURNED_ON", {})
     
-    def turn_off(self) :
-        #check to see if any other devices want me on
-        if self.devices_who_want_me_on == []:
-            self.force_off()
-        else:
-            #remove device that last requested to be off from the list of devices_who_want_me_on
-            logging.info(f"(Add device var here) sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
+    def turn_off(self, payload) :
+        logging.debug(f"payload['source'] is {payload['source']}")
+        logging.debug(f"devices_who_want_me_on {self.devices_who_want_me_on}")
+        if payload['source'] in self.devices_who_want_me_on : # off requests are only valid if the requesting device is in this list
+            self.devices_who_want_me_on.remove(payload['source'])
+            if self.state == "ON" :
+                if len(self.devices_who_want_me_on) > 0 : #check to see if any other devices want me on
+                    self.force_off({})
+                else:
+                    logging.info(f"(Add device var here) sent an event that would normally turn me off, but I'm waiting on {self.devices_who_want_me_on} before I can turn off")
+                    if self.turn_off_delay > 0 :
+                        if self.blink_during_turn_off :
+                            self.light.blink(self.blink_time, self.blink_time, None, True)
+                        self.timer = threading.Timer (self.turn_off_delay, self.force_off) 
+                        self.timer.start()
+                        self.state = "SHUTTING_DOWN"
+                        logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
+                    else :
+                        self.force_off({})
     
-    def force_off(self) :
-        #kill the timer if there is one
-        logging.debug(f"TURNING OFF {self.config['label']}")
-        self.light.off()
-        self.emit_event("TURNED_OFF", {})
-            
-    def toggle(self):
-        #this toggle current state unless there is an overide modifer to keep it on
+    def force_off(self, payload) :
+        if self.state == "SHUTTING_DOWN" :
+            self.kill_shutdown_timer()
+        if self.state != "OFF" :
+            self.devices_who_want_me_on.clear() #  empties the devices_who_want_me_on list
+            logging.debug(f"TURNING OFF {self.config['label']}")
+            self.light.off()
+            self.state = "OFF"
+            self.emit_event("TURNED_OFF", {})
+             
+    def toggle(self, payload):
+        #this toggles visual state
         logging.debug(f"TOGGLING {self.config['label']}")
-        if self.light.is_lit :
-            self.turn_off()
+        if self.state == "OFF" :
+            self.turn_on({})
         else:
-            self.turn_on()
+            self.force_off({})
 
-    def blink(self):
-        #kill the timer if there is one
-        self.kill_timer()
-        logging.debug(f"BLINKING {self.config['label']}")
-        self.light.blink(self.blink_time, self.blink_time, None, True)
-        self.emit_event("BLINKING", {})
-
-    def delayed_off(self) :
-        self.kill_timer()
-        logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
-        self.timer = threading.Timer (self.turn_off_delay, self.turn_off) 
-        self.timer.start()
-    
-    def delayed_blink_off(self) :
-        self.kill_timer()
-        #first start blinking
-        self.blink()
-        #then set the timer
-        self.delayed_off()
-    
-    def kill_timer(self):
-        #just kills the timer if it's running
+    def kill_shutdown_timer(self):
+        #timer is only used for delaying turn off
+        # just kills the timer if it's running
         try:
             self.timer.cancel()
-            logging.debug(f"Found and CANCELLED timer on {self.config['label']} ")
         except:
-            logging.debug(f"No timer found on {self.config['label']}. PROCEEDING")
             pass
+        logging.debug(f"Timer cancelled for {self.config['label']} ")
 
 
 class SuperSimpleLedLight(RudiDevice):
