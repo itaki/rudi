@@ -30,7 +30,7 @@ def DeviceFactory(device):
 
     classmap = {
         'SimpleButton': SimpleButton,
-        'Led': Led,
+        'Gpio_Shop_Light': Gpio_Shop_Light,
         'SuperSimpleLedLight': SuperSimpleLedLight,
         'KeyboardButton' : KeyboardButton
     }
