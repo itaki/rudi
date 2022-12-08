@@ -79,7 +79,7 @@
         {
             "label" : "Miter Saw Light",
             "id" : "miter-saw-light",
-            "type" : "Led",
+            "type" : "Gpio_Shop_Light",
             "physical_location" : "light attached to pi",
             "connection" : {
                 "bus" : "GPIO",
@@ -96,29 +96,31 @@
                 {
                     "listen_to" : "button-1",
                     "listen_for" : "PRESSED",
-                    "do_this" : "BLINK"
+                    "do_this" : "TURN_ON"
                 },
                 {
                     "listen_to" : "button-2",
                     "listen_for" : "PRESSED",
-                    "do_this" : "TOGGLE"
+                    "do_this" : "TURN_OFF"
                 },
                 {
                     "listen_to" : "button-3",
                     "listen_for" : "PRESSED",
-                    "do_this" : "TURN_OFF"
+                    "do_this" : "TOGGLE"
                 },
                 {
                     "listen_to" : "button-4",
                     "listen_for" : "PRESSED",
-                    "do_this" : "DELAYED_OFF"
+                    "do_this" : "TOGGLE"
                 },
-                {
+                {   
                     "listen_to" : "button-5",
                     "listen_for" : "PRESSED",
-                    "do_this" : "DELAYED_BLINK_OFF"
+                    "do_this" : "FORCE_OFF"
                 }
+            
             ]
         }
+
     ]
 }
