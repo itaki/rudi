@@ -36,7 +36,7 @@ Docs\
 
 Skematic
 
-![R.U.D.I.](images/RUDI-4.png)
+![R.U.D.I.](images/RUDI-5.png)
 
 \
 \
