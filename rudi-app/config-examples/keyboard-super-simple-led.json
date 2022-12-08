@@ -1,0 +1,86 @@
+{
+    "info" : [
+        { "name" : "Keyboard Buttons and Simple Little Red LED" }
+    ],
+    "hardware" : {
+        "use_mock_pins" : true 
+    },
+    "devices" : [
+        {
+            "label" : "Fake Mitre Saw",
+            "id" : "fake-mitre-saw",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "q",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "w",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Fake Dust Collector",
+            "id" : "fake-dust-collector",
+            "type" : "Keyboard",
+            "physical_location" : "Some letters on a keyboard that is connected to Rudi",
+            "connection" : {},
+            "preferences" : {
+                "mappings" : [
+                    {
+                        "keyboard_key" : "a",
+                        "event_name" : "TURNED_ON"
+                    },
+                    {
+                        "keyboard_key" : "s",
+                        "event_name" : "TURNED_OFF"
+                    }
+                ]
+            },
+            "subscriptions" : []
+        },
+        {
+            "label" : "Little Red LED",
+            "id" : "little-red-led",
+            "type" : "SuperSimpleLedLight",
+            "physical_location" : "A little baby red LED attached to pi",
+            "connection" : {
+                "bus" : "GPIO",
+                "address" : { 
+                    "pin" : 21
+                }
+            },
+            "preferences" : {},
+            "subscriptions" : [
+                {
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_ON",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "fake-mitre-saw",
+                    "listen_for" : "TURNED_OFF",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_ON",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "fake-dust-collector",
+                    "listen_for" : "TURNED_OFF",
+                    "do_this" : "TURN_OFF"
+                }
+                
+            ]
+        }
+    ]
+}
