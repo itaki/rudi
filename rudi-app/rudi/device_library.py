@@ -93,9 +93,9 @@ class Gpio_Shop_Light(RudiDevice):
         self.state = "OFF" # can also be ON or SHUTTING_DOWN
 
         # set preferences
-        self.turn_off_delay = 3
+        self.turn_off_delay = 0
         self.blink_time = .5
-        self.delay_style = "BLINK" # can also be BLINK
+        self.delay_style = "SOLID" # can also be BLINK
         if 'turn_off_delay' in self.config['preferences'] :
             self.turn_off_delay = self.config['preferences']['turn_off_delay']
         if 'delay_style' in self.config['preferences'] :
