@@ -8,7 +8,7 @@ class DeviceManager():
     devices = {}
 
     def add_device(self, device):
-        logging.debug(f"Adding device: {device['id']} on {device['connection']}")
+        logging.debug(f"Adding {device['type']}: {device['id']} at {device['connection']} " )
         self.devices[device["id"]] = DeviceFactory(device)
 
     def add_devices_from_config(self, devices):
@@ -30,7 +30,7 @@ def DeviceFactory(device):
 
     classmap = {
         'SimpleButton': SimpleButton,
-        'LedLight': LedLight,
+        'Gpio_Shop_Light': Gpio_Shop_Light,
         'SuperSimpleLedLight': SuperSimpleLedLight,
         'Keyboard' : Keyboard
     }

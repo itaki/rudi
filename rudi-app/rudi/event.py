@@ -19,8 +19,14 @@ class EventManager():
 
         # asyncio.run(hello("ws://rudi-admin:8080"))
     
-    def emit(self, source, event, payload):
+    def emit(self, source, event, data):
 
+        payload = {
+            "source" : source,
+            "event" : event,
+            "data" : data
+        }
+        
         global_event = source + "." + event
         logging.debug(f"Event emitted: {global_event}")
         self.ee.emit(global_event, payload)

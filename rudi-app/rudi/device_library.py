@@ -2,8 +2,8 @@ import logging
 from rudi.device import Device as RudiDevice
 from . import shop
 from gpiozero import Device, Button, LED
-import threading
 from sshkeyboard import listen_keyboard
+import threading
 
 ## DO: Use self.config dictionary object to access device config data
 ## DON'T Override __init__(), use on_init() instead as needed (and if you declare on_init make sure to emit the ready event)
@@ -63,63 +63,135 @@ class SimpleButton(RudiDevice):
         #register my valid events in case anyone asks what I can do
         self.register_event("PRESSED")
 
-        #setup a gpiozero button on my designated pin
+        Button.self = ''
         button = Button(self.config['connection']['address']['pin'])
-
-        #point to a function when button is pressed
-        #note: this just points to a function, 
-        button.when_pressed = self.on_press
-        
+        button.self = self
+        button.when_pressed = self.on_press.__func__
 
         self.emit_event("READY", {})
-    
-    def on_press(self): 
-        self.emit_event("PRESSED", {})
 
-class LedLight(RudiDevice):
+    def on_press(btn): 
+        btn.self.emit_event("PRESSED", {})
 
-    light_is_on = False
 
-    auto_turn_enable = True
-    auto_turn_off_duration = 300
-    
-    devices_who_are_on = []
+
+
+class Gpio_Shop_Light(RudiDevice):
+    '''This is a simple LED which can be on, off, toggled, forced off, delayed off, and blink delayed off
+
+        Default is simple on and off.
+        Add preferences to config.json for options
+        "preferences" : {
+                "turn_off_delay" : 3,
+                "delay_style" : "SOLID"
+                "blink_time" : ".5"
+            },
+        delay is in seconds
+        style options are "BLINK" and "SOLID" but if left blank defaults to "SOLID"
+    '''
 
     def on_init(self):
+        #register events that I can broadcast to the world
         self.register_event("TURNED_ON")
         self.register_event("TURNED_OFF")
+        self.register_event("BEGAN_DELAYED_TURN_OFF")
 
-        self.register_action("TURN_ON", self.turn_on_light)
-        self.register_action("TURN_OFF_SOFT", self.turn_off_light_soft)
-        self.register_action("TURN_OFF_HARD", self.turn_off_light_hard)
+        #register actions that I can do
+        self.register_action("TURN_ON", self.handle_turn_on_action)
+        self.register_action("TURN_OFF", self.handle_turn_off_action)
+        self.register_action("TOGGLE", self.handle_toggle_action)
+        self.register_action("FORCE_OFF", self.handle_force_off_action)
+        
+        #create GPIOZERO LED on proper pin
+        self.light = LED(self.config['connection']['address']['pin'])
 
-        # add code to override auto turnoff defualt values if found in preferences
+        # set state vars
+        self.state = "OFF" # can also be ON or SHUTTING_DOWN
 
-        # add code to start a counter for when to turn off light
+        # set preferences
+        self.turn_off_delay = 0
+        self.blink_time = .5
+        self.delay_style = "SOLID" # can also be BLINK
+        if 'turn_off_delay' in self.config['preferences'] :
+            self.turn_off_delay = self.config['preferences']['turn_off_delay']
+        if 'delay_style' in self.config['preferences'] :
+            self.delay_style = self.config['preferences']['delay_style']
+        if 'blink_time' in self.config['preferences'] :
+            self.blink_time = float(self.config['preferences']['blink_time'])
 
-        # add code to tell GPIO to turn off the light when the counter is reached 
+        #make a blank list to keep modifiers
+        self.devices_who_want_me_on = []
 
-        # add code to reset counter when new events are heards
-
-        # add code here to setup hardware connection
-        # GPIO.whatever(self.config.connection.whatever)
-
+        #tell the world I'm ready aka "hello world"
         self.emit_event("READY", {})
-    
-    def turn_on_light(self, args) :
-        # do GPIO stuff to turn on light
-        self.light_is_on = True
-        self.emit_event("TURNED_ON", {})
-    
-    def turn_off_light_soft(self) :
-        # determine if the light should really be turned off
-        # if so call:
-        self.turn_off_light_hard()
 
-    def turn_off_light_hard(self) :
-        # do GPIO stuff to turn off light
-        self.light_is_on = False
-        self.emit_event("TURNED_OFF", {})
+    #make action handlers to spawn off functions
+    def handle_turn_on_action(self, payload) :
+        self.turn_on(payload)
+    def handle_turn_off_action(self, payload) :
+        self.turn_off(payload)
+    def handle_toggle_action(self, payload) :
+        self.toggle(payload)
+    def handle_force_off_action(self, payload) :
+        self.force_off()
+
+    #all my methods
+    def turn_on(self, payload) :
+        if payload['source'] not in self.devices_who_want_me_on:
+            self.devices_who_want_me_on.append(payload['source'])
+        if self.state == "SHUTTING_DOWN" :
+            self.kill_shutdown_timer()
+        if self.state != "ON" :
+            logging.debug(f"TURNING ON {self.config['label']}")
+            self.light.on()
+            self.state = "ON"
+            self.emit_event("TURNED_ON", {})
+    
+    def turn_off(self, payload) :
+        if payload['source'] in self.devices_who_want_me_on : # off requests are only valid if the requesting device is in this list
+            self.devices_who_want_me_on.remove(payload['source'])
+            if self.state == "ON" :
+                if len(self.devices_who_want_me_on) > 0 : #check to see if any other devices want me on
+                   logging.debug(f"{self.config['id']} received a turn off request from {payload['source']} and removed {payload['source']} from the 'devices_who_want_me_on' list but {self.config['id']} will stay on for: {self.devices_who_want_me_on}")
+                else:            
+                    if self.turn_off_delay > 0 :
+                        if self.delay_style == "BLINK" :
+                            self.light.blink(self.blink_time, self.blink_time, None, True)
+                        self.timer = threading.Timer(self.turn_off_delay, self.force_off) 
+                        self.timer.start()
+                        logging.debug(f"TURNING OFF {self.config['label']} IN {self.turn_off_delay} SECONDS")
+                        self.state = "SHUTTING_DOWN"
+       
+                    else :
+                        self.force_off()
+    
+    def force_off(self) :
+        if self.state == "SHUTTING_DOWN" :
+            self.kill_shutdown_timer()
+        if self.state != "OFF" :
+            self.devices_who_want_me_on.clear() #  empties the devices_who_want_me_on list
+            logging.debug(f"TURNING OFF {self.config['label']}")
+            self.light.off()
+            self.state = "OFF"
+            self.emit_event("TURNED_OFF", {})
+             
+    def toggle(self, payload):
+        #this toggles visual state
+        logging.debug(f"TOGGLING {self.config['label']}")
+        if self.state == "ON" and payload['source'] in self.devices_who_want_me_on:
+            self.turn_off(payload)
+        else: # if I'm off, shutting down, or a new device is requesting me to be on
+            self.turn_on(payload)
+
+    def kill_shutdown_timer(self):
+        #timer is only used for delaying turn off
+        # just kills the timer if it's running
+        try:
+            self.timer.cancel()
+        except:
+            pass
+        logging.debug(f"Timer cancelled for {self.config['label']} ")
+
 
 class SuperSimpleLedLight(RudiDevice):
 
