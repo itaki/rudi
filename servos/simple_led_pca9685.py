@@ -4,7 +4,10 @@ import adafruit_pca9685
 i2c = busio.I2C(board.SCL, board.SDA)
 hat = adafruit_pca9685.PCA9685(i2c, address=0x42)
 
-hat.frequency = 60
+# you don't need a fast PWM to run an LED
+hat.frequency = 50
+
+#hat.frequency = 1000
 
 led_channel = hat.channels[15]
 
