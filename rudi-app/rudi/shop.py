@@ -34,7 +34,7 @@ class Shop():
         return True
     
     def set_pin_mode(self):
-        if self.config['hardware']['use_mock_pins']:
+        if self.config['hardware']['GPIO']['preferences']['use_mock_pins']:
             logging.warning("USING MOCK PINS!")
             Device.pin_factory = MockFactory()
         return True

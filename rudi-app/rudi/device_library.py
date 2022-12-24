@@ -64,7 +64,7 @@ class SimpleButton(RudiDevice):
         self.register_event("PRESSED")
 
         Button.self = ''
-        button = Button(self.config['connection']['address']['pin'])
+        button = Button(self.config['connection']['pin'])
         button.self = self
         button.when_pressed = self.on_press.__func__
 
@@ -103,7 +103,7 @@ class Gpio_Shop_Light(RudiDevice):
         self.register_action("FORCE_OFF", self.handle_force_off_action)
         
         #create GPIOZERO LED on proper pin
-        self.light = LED(self.config['connection']['address']['pin'])
+        self.light = LED(self.config['connection']['pin'])
 
         # set state vars
         self.state = "OFF" # can also be ON or SHUTTING_DOWN
@@ -205,7 +205,7 @@ class SuperSimpleLedLight(RudiDevice):
         self.register_action("TURN_ON", self.turn_on_light)
         self.register_action("TURN_OFF", self.turn_off_light)
 
-        self.light = LED(self.config['connection']['address']['pin'])
+        self.light = LED(self.config['connection']['pin'])
 
         self.emit_event("READY", {})
     
