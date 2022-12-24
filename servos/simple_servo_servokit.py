@@ -6,6 +6,9 @@ from adafruit_servokit import ServoKit
 # change the address to your board address
 kit = ServoKit(channels=16, address=0x42)
 
+'''while True:
+    kit.servo[0].angle = 90'''
+
 while True:
     kit.servo[0].angle = 10 
     time.sleep(.5)      # need to sleep to give the servo time to move
