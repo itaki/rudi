@@ -1,0 +1,206 @@
+{
+    "info" : [
+        { "name" : "Mike's light and button shop" }
+    ],
+    "hardware" : {
+        "GPIO" : [
+            {
+                "preferenses" : {
+                    "use_mock_pins" : false 
+                }
+                
+            }
+        ],
+        "I2C" : [
+            {
+                "label" : "Servo Hat 01",
+                "id" : "servohat-1",
+                "type" : "Adafruit 16-Channel PWM/Servo HAT or Bonnet pca9685",
+                "physical_location" : "next to pi",
+                "address" : "0x42",
+                "frequency" : 1000,
+                "channels" : 16,
+                "preferences" : {},
+                "subscriptions" : [
+                ] 
+
+            }
+        ]
+        
+
+    },
+    "devices" : [
+        {
+            "label" : "Button 1",
+            "id" : "button-1",
+            "type" : "SimpleButton",
+            "physical_location" : "top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 20
+
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 2",
+            "id" : "button-2",
+            "type" : "SimpleButton",
+            "physical_location" : "second from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 23
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 3",
+            "id" : "button-3",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 24
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 4",
+            "id" : "button-4",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 25
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Button 5",
+            "id" : "button-5",
+            "type" : "SimpleButton",
+            "physical_location" : "third from the top button on the board",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 26
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        },
+        {
+            "label" : "Miter Saw Light",
+            "id" : "miter-saw-light",
+            "type" : "Gpio_Shop_Light",
+            "physical_location" : "light attached to pi",
+            "connection" : {
+                "bus" : "GPIO",
+                "pin" : 21
+            },
+            "preferences" : {
+                "turn_off_delay" : 3,
+                "delay_style" : "BLINK",
+                "blink_time" : ".5"
+            },
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "button-2",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "button-3",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TOGGLE"
+                },
+                {
+                    "listen_to" : "button-4",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TOGGLE"
+                },
+                {   
+                    "listen_to" : "button-5",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "FORCE_OFF"
+                }
+            
+            ]
+        },
+        {
+            "label" : "Servo 01 On Hat 01",
+            "id" : "servo-01-on-hat-01",
+            "type" : "SimpleServo",
+            "physical_location" : "light attached to pi",
+            "connection" : {
+                "bus" : "I2C",
+                "address" : "0x42", 
+                "pin" : 0
+            },
+            "preferences" : {
+                "max" : 150,
+                "min" : 30
+            },
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "OPEN"
+                },
+                {
+                    "listen_to" : "button-2",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "CLOSE"
+                },
+                {
+                    "listen_to" : "button-3",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "RATTLE"
+                }
+            ]
+        },
+        {
+            "label" : "LED 15 On Hat 01",
+            "id" : "LED 15-on-hat-01",
+            "type" : "ServoPWMLed",
+            "physical_location" : "light attached servo board at address 0x42",
+            "connection" : {
+                "bus" : "I2C",
+                "address" : "0x42", 
+                "pin" : 15
+            },
+            "preferences" : {
+                "max" : 150,
+                "min" : 30,
+                "off" : "0x0000",
+                "on" : "0xffff"
+
+            },
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_ON"
+                },
+                {
+                    "listen_to" : "button-2",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_OFF"
+                },
+                {
+                    "listen_to" : "button-3",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "BLINK"
+                }
+            ]
+        }
+
+    ]
+}
