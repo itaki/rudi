@@ -5,7 +5,7 @@
     "hardware" : {
         "GPIO" : [
             {
-                "preferenses" : {
+                "preferences" : {
                     "use_mock_pins" : false 
                 }
                 

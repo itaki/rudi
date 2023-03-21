@@ -2,10 +2,10 @@
     "info" : [
         { "name" : "Mike's light and button shop" }
     ],
-    "hardware" : {
+    "boards" : {
         "GPIO" : [
             {
-                "preferenses" : {
+                "preferences" : {
                     "use_mock_pins" : false 
                 }
                 
@@ -17,9 +17,9 @@
                 "id" : "servohat-1",
                 "type" : "Adafruit 16-Channel PWM/Servo HAT or Bonnet pca9685",
                 "physical_location" : "next to pi",
+                "channels" : 16,
                 "address" : "0x42",
                 "frequency" : 1000,
-                "channels" : 16,
                 "preferences" : {},
                 "subscriptions" : [
                 ] 

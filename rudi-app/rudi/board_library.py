@@ -14,12 +14,13 @@ class ServoHat(RudiBoard):
         #register my valid events in case anyone asks what I can do
         self.register_event("CREATED")
 
-        board = ServoKit(channels=self.config['channels'], address=hex(int(self.config['address'], 16)) )
+        self.board = ServoKit(channels=self.config['channels'], 
+                        address=hex(int(self.config['address'], 
+                        frequency = int(self.config['frequency']))) )
 
         self.emit_event("CREATED", {})
 
-    def on_press(btn): 
-        btn.self.emit_event("PRESSED", {})
+
 
 
 
