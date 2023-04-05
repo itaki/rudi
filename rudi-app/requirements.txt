@@ -1,6 +1,9 @@
-adafruit-circuitpython-servokit
 gpiozero
 pymitter
 RPi.GPIO
 sshkeyboard
 websockets
+adafruit-circuitpython-servokit
+adafruit-board-toolkit
+adafruit-blinka
+adafruit-platformdetect

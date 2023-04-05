@@ -91,6 +91,14 @@ The easiest way set this quickly is to add to the command line before you run th
 
 ---
 
+## Mocking Hardware
+
+Use this environment variable to prevent RUDI from attempting to connect to hardware
+
+    MOCK_HARDWARE=True
+
+---
+
 ## Pi Deployment
 
 ### poll-build-run.py

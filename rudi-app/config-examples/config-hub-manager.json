@@ -1,0 +1,50 @@
+{
+    "info" : [
+        { "name" : "Shop with 3 hubs and no devices" }
+    ],
+    "hubs" : [
+        {
+            "name" : "Mitre Hub",
+            "id" : "mitre-hub",
+            "version" : 1,
+            "gpio_expander" : {
+                "i2c_address" : 64
+            },
+            "pwm_board" : {
+                "i2c_address" : 72
+            },
+            "ad_converter" : {
+                "i2c_address" : 65
+            }
+        },
+        {
+            "name" : "Umbilical Hub",
+            "id" : "ubmilical-hub",
+            "version" : 1,
+            "gpio_expander" : {
+                "i2c_address" : null
+            },
+            "pwm_board" : {
+                "i2c_address" : 67
+            },
+            "ad_converter" : {
+                "i2c_address" : null
+            }
+        },
+        {
+            "name" : "Bench Hub",
+            "id" : "bench-hub",
+            "version" : 1,
+            "gpio_expander" : {
+                "i2c_address" : null
+            },
+            "pwm_board" : {
+                "i2c_address" : 80
+            },
+            "ad_converter" : {
+                "i2c_address" : 74
+            }
+        }
+    ],
+    "devices" : []
+}

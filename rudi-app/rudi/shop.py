@@ -1,6 +1,8 @@
 import logging
+import os
 from gpiozero import Device
 from gpiozero.pins.mock import MockFactory
+from . import hub
 from . import device
 from . import event
 
@@ -11,11 +13,13 @@ em = event.EventManager()
 class Shop():
 
     config = {}
+    mock_hardware = os.environ.get('MOCK_HARDWARE', False)
 
     def __init__(self, shop_config):
         if not self.validate_config(shop_config):
             raise Exception("Invalid Shop Config")
         
+        self.hub_manager = hub.HubManager()
         self.device_manager = device.DeviceManager()
         self.load_config(shop_config)
         logging.info("Shop started!")
@@ -26,16 +30,16 @@ class Shop():
     def load_config(self, data):    
         self.config = data
         logging.debug("Shop Config started loading")
-        self.set_pin_mode()
+        self.set_hardware_mode()
         self.device_manager.add_devices_from_config(self.config['devices'])
         logging.debug("Shop Config finished loading")
     
     def validate_config(self, shop_config):
         return True
     
-    def set_pin_mode(self):
-        if self.config['hardware']['use_mock_pins']:
-            logging.warning("USING MOCK PINS!")
+    def set_hardware_mode(self):
+        if self.mock_hardware:
+            logging.warning("MOCKING HARDWARE!")
             Device.pin_factory = MockFactory()
         return True
 
