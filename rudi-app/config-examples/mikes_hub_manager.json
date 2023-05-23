@@ -1,0 +1,59 @@
+{
+    "info" : [
+        { "name" : "Shop with 1 hub connected to a button and led" }
+    ],
+    "hubs" : [
+        {
+            "name" : "Development Hub",
+            "id" : "dev-hub",
+            "version" : 1,
+            "gpio_expander" : {
+                "type" : "MCP23017",
+                "i2c_address" : 32
+            },
+            "pwm_board" : {
+                "type" : "PCA9685",
+                "i2c_address" : 66,
+                "frequency": 50
+            },
+            "ad_converter" : {
+                "type" : "ADS1115",
+                "i2c_address" : 73
+            }
+        }
+    ],
+    "devices" : [
+        {
+            "label" : "Led 1",
+            "id" : "led-1",
+            "type" : "GPIOExpanderButton",
+            "physical_location" : "connected to dev-hub",
+            "connection" : {
+                "bus" : "dev-hub",
+                "pin" : 1
+
+            },
+            "preferences" : {},
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_ON"
+                }
+            ]
+        },
+        {
+            "label" : "Button 1",
+            "id" : "button-1",
+            "type" : "Button",
+            "physical_location" : "connected to dev-hub",
+            "connection" : {
+                "bus" : "dev-hub",
+                "pin" : 2
+
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        }
+    ]
+}

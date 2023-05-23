@@ -1,0 +1,72 @@
+{ 
+    "boards" : [
+        {
+            "type" : "gpio_expander",
+            "model" : "MCP23017",
+            "description" : "Adafruit GPIO Expander Bonnet - 16 Additional I/O over I2C",
+            "available_addresses" : [32, 39],
+            "pins" : 16
+        },
+        {
+            "type" : "pwm",
+            "model" : "PCA9685",
+            "description" : "Adafruit 16-Channel PWM / Servo HAT",
+            "available_addresses" : [64, 126],
+            "channels" : 16,
+            "frequency" : 50
+        },
+        {
+            "type" : "ad_converter",
+            "model" : "ADS1115",
+            "description" : "Adafruit 16-Channel PWM / Servo HAT",
+            "available_addresses" : [72, 74],
+            "channels" : 4,
+            "bits": 16
+        },
+        {
+            "type" : "ad_converter",
+            "model" : "ADS1105",
+            "description" : "Adafruit 16-Channel PWM / Servo HAT",
+            "available_addresses" : [64, 126],
+            "channels" : 4,
+            "bits": 12
+        }
+        
+    ],
+    "sensors" : [
+        {
+            "type" : "button",
+            "model" : "22mm_6v_rgb_momentary",
+            "description" : "Rugged Metal Pushbutton - 22mm 6V RGB Momentary",
+            "action" : "momentary"
+        },
+        {
+            "type" : "voltage",
+            "model" : "ACS712",
+            "description" : "Current Sensor",
+            "amps" : [5, 20, 30],
+            "number_of_readings" : 20,
+            "drop_trigger_percentage" : 1.5
+        }
+    ],
+    "controls" : [
+        {
+            "type" : "servo",
+            "model" : "35KG",
+            "description": "DSServo 35KG Servo",
+            "mode" : "standard"
+        },
+        {
+            "type" : "rgb_led",
+            "model" : "22mm_6v_rgb_momentary",
+            "description" : "Rugged Metal Pushbutton - 22mm 6V RGB Momentary",
+            "number_of_pins" : 3
+        },
+        {
+            "type" : "relay",
+            "model" : "SSR-40 DA",
+            "description" : "40 Amp solid state relay",
+            "max_amps" : 40
+        }
+    ]
+}
