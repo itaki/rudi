@@ -8,12 +8,13 @@
             "pins" : 16
         },
         {
-            "type" : "pwm",
+            "type" : "pwm_board",
             "model" : "PCA9685",
             "description" : "Adafruit 16-Channel PWM / Servo HAT",
             "available_addresses" : [64, 126],
             "channels" : 16,
-            "frequency" : 50
+            "servo_frequency": 50,
+            "led_frequency": 1000
         },
         {
             "type" : "ad_converter",
