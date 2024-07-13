@@ -245,8 +245,6 @@ class GPIOExpanderLedLight(RudiDevice):
 
         self.register_action("TURN_ON", self.turn_on_light)
         self.register_action("TURN_OFF", self.turn_off_light)
-
-        self.light = 
         
         self.emit_event("READY", {})
     
