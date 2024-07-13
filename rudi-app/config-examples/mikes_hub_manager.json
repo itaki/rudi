@@ -1,36 +1,43 @@
 {
     "info" : [
-        { "name" : "Shop with 1 hub connected to a button and led" }
+        { "name" : "a simple button and simple led connected through a GPIO expander" }
     ],
-    "hubs" : [
+    "boards" : [
         {
-            "name" : "Development Hub",
-            "id" : "dev-hub",
-            "version" : 1,
-            "gpio_expander" : {
-                "type" : "MCP23017",
-                "i2c_address" : 32
+            "my_gpio_expander" : {
+                "branch" : "desk",
+                "type" : "gpio_expander",
+                "model" : "MCP23017",
+                "i2c_address" : 32,
+                "physical_location" : "miter saw"
             },
-            "pwm_board" : {
-                "type" : "PCA9685",
-                "i2c_address" : 66
+            "my_pwm_board" : {
+                "branch" : "desk",
+                "type" : "pwm_board",
+                "model" : "PCA9685",
+                "i2c_address" : 66,
+                "frequency": 50
             },
-            "ad_converter" : {
-                "type" : "ADS1115",
+            "my_ad_converter" : {
+                "branch" : "desk",
+                "type" : "ad_converter",
+                "model" : "ADS1115",
                 "i2c_address" : 73
             }
         }
     ],
     "devices" : [
         {
-            "label" : "Led 1",
-            "id" : "led-1",
-            "type" : "GPIOExpanderButton",
-            "physical_location" : "connected to dev-hub",
-            "connection" : {
-                "bus" : "dev-hub",
-                "pin" : 1
 
+            "type" : "SuperSimpleLedLight",
+            "label" : "Led 1",
+            "id" : "led-1",            
+            "branch" : "desk",
+            "physical_location" : "on Mikes desk",
+            "connection" : {
+                "board" : "my_gpio_expander",
+                "board_type" : "gpio_expander",
+                "pin" : 1
             },
             "preferences" : {},
             "subscriptions" : [
@@ -42,14 +49,15 @@
             ]
         },
         {
+            "type" : "SimpleButton",
             "label" : "Button 1",
             "id" : "button-1",
-            "type" : "Button",
-            "physical_location" : "connected to dev-hub",
+            "branch" : "desk",
+            "physical_location" : "on Mikes desk",
             "connection" : {
-                "bus" : "dev-hub",
+                "board" : "my_gpio_expander",
+                "board_type" : "gpio_expander",
                 "pin" : 2
-
             },
             "preferences" : {},
             "subscriptions" : []
