@@ -13,8 +13,7 @@
             },
             "pwm_board" : {
                 "type" : "PCA9685",
-                "i2c_address" : 66,
-                "frequency": 50
+                "i2c_address" : 66
             },
             "ad_converter" : {
                 "type" : "ADS1115",

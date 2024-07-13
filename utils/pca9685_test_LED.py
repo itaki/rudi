@@ -4,6 +4,8 @@ import board
 import busio
 from adafruit_pca9685 import PCA9685
 from adafruit_motor import servo
+'''
+comment block '''
 
 # Initialize I2C bus.
 i2c = busio.I2C(board.SCL, board.SDA)
