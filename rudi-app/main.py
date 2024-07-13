@@ -3,14 +3,14 @@ import logging
 import json
 from rudi import shop as shop
 
-config = 'config.json'
-hardware = 'hardware.json'
+CONFIG = 'config.json'
+HARDWARE = 'hardware.json'
 
 # Determine the directory where main.py is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Specify the location of config.json based on the current directory
-config_path = os.path.join(current_dir, config)
-hardware_path = os.path.join(current_dir, hardware)
+config_path = os.path.join(current_dir, CONFIG)
+hardware_path = os.path.join(current_dir, HARDWARE)
 
 # set logging level
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
