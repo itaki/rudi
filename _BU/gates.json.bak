@@ -1,0 +1,24 @@
+{
+    "gates": {
+        "zero_gate": {
+            "physical_location": "connected to dev-hub pin 00",
+            "status": 1,
+            "io_location": {
+                "address": "0x42",
+                "pin": 0
+            },
+            "min": 60,
+            "max": 120
+        },
+        "one_gate": {
+            "physical_location": "connected to dev-hub pin 01",
+            "status": 1,
+            "io_location": {
+                "address": "0x42",
+                "pin": 1
+            },
+            "min": 60,
+            "max": 120
+        }
+    }
+}
