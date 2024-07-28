@@ -13,8 +13,8 @@ config_path = os.path.join(current_dir, CONFIG)
 hardware_path = os.path.join(current_dir, HARDWARE)
 
 # set logging level
-LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
-#LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
+#LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
 logging.basicConfig(level=LOG_LEVEL)
 
 # load config
