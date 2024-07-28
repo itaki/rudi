@@ -73,6 +73,23 @@ class SimpleButton(RudiDevice):
     def on_press(btn): 
         btn.self.emit_event("PRESSED", {})
 
+class GPIOExpanderButton(RudiDevice):
+
+    def on_init(self):
+        #register my valid events in case anyone asks what I can do
+        self.register_event("PRESSED")
+
+
+        Button.self = ''
+        #button = HubManager.hubs[]
+        #button.self = self
+        #button.when_pressed = self.on_press.__func__
+
+        self.emit_event("READY", {})
+
+    def on_press(btn): 
+        btn.self.emit_event("PRESSED", {})
+
 
 
 
@@ -207,6 +224,28 @@ class SuperSimpleLedLight(RudiDevice):
 
         self.light = LED(self.config['connection']['address']['pin'])
 
+        self.emit_event("READY", {})
+    
+    def turn_on_light(self, event) :
+        self.light.on()
+        self.emit_event("TURNED_ON", {})
+    
+    def turn_off_light(self, event) :
+        self.light.off()
+        self.emit_event("TURNED_OFF", {})
+
+class GPIOExpanderLedLight(RudiDevice):
+
+    # I am a STATELESS LED light device - I always do the last thing asked of me
+    # I am not very practical for real world applications
+
+    def on_init(self):
+        self.register_event("TURNED_ON")
+        self.register_event("TURNED_OFF")
+
+        self.register_action("TURN_ON", self.turn_on_light)
+        self.register_action("TURN_OFF", self.turn_off_light)
+        
         self.emit_event("READY", {})
     
     def turn_on_light(self, event) :

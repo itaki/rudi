@@ -1,0 +1,66 @@
+{
+    "info" : [
+        { "name" : "a simple button and simple led connected through a GPIO expander" }
+    ],
+    "boards" : [
+        {
+            "my_gpio_expander" : {
+                "branch" : "desk",
+                "type" : "gpio_expander",
+                "model" : "MCP23017",
+                "i2c_address" : 32,
+                "physical_location" : "miter saw"
+            },
+            "my_pwm_board" : {
+                "branch" : "desk",
+                "type" : "pwm_board",
+                "model" : "PCA9685",
+                "i2c_address" : 66,
+                "frequency": 50
+            },
+            "my_ad_converter" : {
+                "branch" : "desk",
+                "type" : "ad_converter",
+                "model" : "ADS1115",
+                "i2c_address" : 73
+            }
+        }
+    ],
+    "devices" : [
+        {
+
+            "type" : "SuperSimpleLedLight",
+            "label" : "Led 1",
+            "id" : "led-1",            
+            "branch" : "desk",
+            "physical_location" : "on Mikes desk",
+            "connection" : {
+                "board" : "my_gpio_expander",
+                "board_type" : "gpio_expander",
+                "pin" : 1
+            },
+            "preferences" : {},
+            "subscriptions" : [
+                {
+                    "listen_to" : "button-1",
+                    "listen_for" : "PRESSED",
+                    "do_this" : "TURN_ON"
+                }
+            ]
+        },
+        {
+            "type" : "SimpleButton",
+            "label" : "Button 1",
+            "id" : "button-1",
+            "branch" : "desk",
+            "physical_location" : "on Mikes desk",
+            "connection" : {
+                "board" : "my_gpio_expander",
+                "board_type" : "gpio_expander",
+                "pin" : 2
+            },
+            "preferences" : {},
+            "subscriptions" : []
+        }
+    ]
+}

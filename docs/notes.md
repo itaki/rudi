@@ -132,8 +132,9 @@ Required
 
 Documentation
 ---
-<https://learn.adafruit.com/gpio-expander-bonnet/overview>/
-<https://docs.circuitpython.org/projects/mcp230xx/en/latest/>
+<https://learn.adafruit.com/gpio-expander-bonnet/overview>\
+<https://docs.circuitpython.org/projects/mcp230xx/en/latest/>\
+<https://learn.adafruit.com/gpio-expander-bonnet/pinouts>
 
 \
 \

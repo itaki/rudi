@@ -7,4 +7,5 @@ services:
       context: .
     environment:
       - LOG_LEVEL=DEBUG
+      - MOCK_HARDWARE=TRUE
       
