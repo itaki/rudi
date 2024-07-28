@@ -10,5 +10,4 @@ adafruit-platformdetect
 adafruit-circuitpython-ads1x15
 adafruit-circuitpython-mcp230xx
 adafruit-circuitpython-pca9685
-i2c-tools
-python-smbus
+#python-smbus - needs to be installed by sudo apt install python3-smbus 
