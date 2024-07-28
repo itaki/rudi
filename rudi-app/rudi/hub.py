@@ -71,12 +71,12 @@ class Hub():
         # instantiate the GPIO expander and connect to the i2c bus
         # grab the library from hardware file
         if 'i2c_address' in self.config['gpio_expander']: # see if there is a valid address
-            self.config['gpio_expander']['hex_address'] = hex(self.config['gpio_expander']['i2c_address'])
+            self.config['gpio_expander']['i2c_address'] = int(self.config['gpio_expander']['i2c_address'], 16) # this converts json HEX string to int
             try:
                 self.gpio_expander_board = MCP23017(self.i2c_bus, address=self.config['gpio_expander']['i2c_address']) # instantiate the board
-                logging.debug(f"Created GPIO Expander at {self.config['gpio_expander']['hex_address']} which is decimal {self.config['gpio_expander']['i2c_address']}")
+                logging.debug(f"Address {hex(self.config['gpio_expander']['i2c_address'])} : Created GPIO Expander : Decimal {self.config['gpio_expander']['i2c_address']}")
             except:
-                logging.error(f"COULD NOT CREATE GPIO EXPANDER AT {self.config['gpio_expander']['hex_address']} which is decimal {self.config['gpio_expander']['i2c_address']}")
+                logging.error(f"Address {hex(self.config['gpio_expander']['i2c_address'])} : COULD NOT CREATE GPIO EXPANDER : Decimal {self.config['gpio_expander']['i2c_address']}")
 
             
 
@@ -85,25 +85,25 @@ class Hub():
         # instantiate the pwm board and connect to the i2c bus
 
         if 'i2c_address' in self.config['pwm_servo']: # see if there is a valid address
-            self.config['pwm_servo']['hex_address'] = hex(self.config['pwm_servo']['i2c_address'])
+            self.config['pwm_servo']['i2c_address'] = int(self.config['pwm_servo']['i2c_address'], 16) # this converts json HEX string to int
             try:
                 self.pwm_servo = PCA9685(self.i2c_bus, address=self.config['pwm_servo']['i2c_address']) # instantiate the board
                 if 'frequency' in self.config['pwm_servo']:
                     self.pwm_servo.frequency = self.config['pwm_servo']['frequency']
                 else:
                     self.pwm_servo.frequency = 50 # 50 is the default for servos. 100-1000 is generally used for LEDs
-                logging.debug(f"Created PWM board at {self.config['pwm_servo']['hex_address']} which is decimal {self.config['pwm_servo']['i2c_address']}")
+                logging.debug(f"Address {hex(self.config['pwm_servo']['i2c_address'])} : Created PWM board : Decimal {self.config['pwm_servo']['i2c_address']}")
             except:
-                logging.error(f"COULD NOT CREATE PWM BOARD AT {self.config['pwm_servo']['hex_address']} which is decimal {self.config['pwm_servo']['i2c_address']}")
+                logging.error(f"Address {hex(self.config['pwm_servo']['i2c_address'])} : COULD NOT CREATE PWM BOARD : Decimal {self.config['pwm_servo']['i2c_address']}")
 
  
 
     def setup_ad_converter(self):
         # instantiate the AD board and connect to the i2c bus
         if 'i2c_address' in self.config['ad_converter']: # see if there is a valid address
-            self.config['ad_converter']['hex_address'] = hex(self.config['ad_converter']['i2c_address'])
+            self.config['ad_converter']['i2c_address'] = int(self.config['ad_converter']['i2c_address'], 16) # this converts json HEX string to int
             try:
                 self.ad_converter = ADS.ADS1115(self.i2c_bus, address=self.config['ad_converter']['i2c_address']) # instantiate the board
-                logging.debug(f"Created PWM board at {self.config['ad_converter']['hex_address']} which is decimal {self.config['ad_converter']['i2c_address']}")
+                logging.debug(f"Address {hex(self.config['ad_converter']['i2c_address'])} : Created AD Converter : Decimal {self.config['ad_converter']['i2c_address']}")
             except:
-                logging.error(f"COULD NOT CREATE AD CONVERTER AT {self.config['ad_converter']['hex_address']} which is decimal {self.config['ad_converter']['i2c_address']}")
+                logging.error(f"Address {hex(self.config['ad_converter']['i2c_address'])} : COULD NOT CREATE AD CONVERTER : Decimal {self.config['ad_converter']['i2c_address']}")
